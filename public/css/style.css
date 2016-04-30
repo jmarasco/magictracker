@@ -1,0 +1,592 @@
+/*
+ *********************
+ * =general
+ *********************
+*/
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	color: #4A4A4A;
+	background-color: #F1F1F1;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.btn-primary {
+	background-color: #288EDB;
+}
+
+/*
+ *********************
+ * =navbars
+ *********************
+*/
+
+/* general navbar styles */
+.navbar-parks .navbar-nav li.active a, .navbar-list .navbar-nav li.active a, .navbar-fixed-top .navbar-nav li.active a, form .btn-default {
+	box-shadow: none;
+	background-image: none;
+ }
+
+.navbar-parks .navbar-nav li.active>a, .navbar-list .navbar-nav li.active>a, .navbar-fixed-top .navbar-nav li.active>a {
+	background-color: transparent;
+	font-weight: bold;
+}
+
+.navbar-parks .navbar-nav li.active a:hover, .navbar-list .navbar-nav li.active a:hover, .navbar-fixed-top .navbar-nav li.active a:hover, .navbar-default .navbar-nav>.active>a:focus {
+ 	background-color: transparent;
+ }
+
+.navbar-parks .navbar-nav li.active a:hover, .navbar-list .navbar-nav li.active a:hover {
+  cursor: default;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a { color: #fff;}
+	.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+		background-color: inherit;
+	}
+}
+
+/* navbar-fixed-top styles */
+.navbar-default.navbar-fixed-top, .navbar-fixed-top ul.dropdown-menu, .navbar-default.navbar-fixed-top .navbar-nav>.open>a, .navbar-default.navbar-fixed-top .navbar-nav>.open>a:focus, .navbar-default.navbar-fixed-top .navbar-nav>.open>a:hover, .navbar-default.navbar-fixed-top .navbar-nav>.active>a:focus, .navbar-default.navbar-fixed-top .navbar-nav>.open>a {
+	border: none;
+	background-color: #288EDB;
+	background-image: none;
+	box-shadow: none;
+}
+
+.navbar-default.navbar-fixed-top .navbar-collapse a, .navbar-header a, .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus, .navbar-default.navbar-fixed-top .navbar-nav>li>a:focus, .navbar-default.navbar-fixed-top .navbar-nav>li>a:hover, .navbar-default.navbar-fixed-top .navbar-nav>.active>a:hover, .navbar-default.navbar-fixed-top .navbar-nav>.open>a, .navbar-default.navbar-fixed-top .navbar-nav>.open>a:focus, .navbar-default.navbar-fixed-top .navbar-nav>.open>a:hover, .navbar-default.navbar-fixed-top .navbar-nav>.active>a:focus {
+	color: #fff;
+}
+
+.navbar-default.navbar-fixed-top .navbar-collapse a:hover, .navbar-fixed-top .navbar-nav li.active a:hover {
+	background-color: #53A5E2;
+	background-image: none;
+}
+
+@media (min-width: 768px) {
+	.navbar-right { float: right; }
+}
+
+@media (max-width: 767px) {
+	.navbar-right .form-group { 
+		float: left; 
+		margin-right: 5px;
+		min-width: 80%
+	}
+}
+
+.navbar-fixed-top .navbar-toggle .icon-bar {
+	background-color: #fff;
+}
+
+.navbar-default .navbar-toggle {
+	border-color: #fff;
+}
+
+/* navbar-parks styles*/
+.navbar-parks { padding-left: 0; }
+
+.navbar-parks .active a, .navbar-parks .active a:hover {
+	cursor: default;
+}
+
+.navbar-default.navbar-parks-navbar {
+	border: none;
+	border-radius: 0;
+	background-color: #DDDDDD;
+	box-shadow: none;
+}
+
+.navbar-nav .navbar-parks a {
+	line-height: 19px;
+}
+
+/* navbar-parks underline effect */
+.navbar-parks li a {
+	padding: 15px 0;
+	margin: 0 15px;
+}
+
+@media (min-width: 768px) {
+	.navbar-parks li a:hover { border-bottom: 2px solid #888888; }
+
+	.navbar-parks .active a, .navbar-parks .active a:hover {
+		border-bottom: 2px solid #555;
+	}
+}
+
+/* navbar-list styles */
+.navbar-list {
+	margin-bottom: 0;
+	border: 0;
+	min-height: 35px;
+	background-color: inherit;
+}
+
+.navbar-list li a { padding-top: 0; }
+
+.navbar-default.navbar-list {
+	background-image: none;
+	box-shadow: none;
+}
+
+.navbar-list .navbar-right {
+	padding-right: 15px;
+}
+
+.navbar-list .navbar-collapse { padding-left: 0; }
+
+.list-filter, .list-sort {
+	font-size: 95%;
+	font-weight: bold;
+}
+
+.list-filter .dropdown-toggle, .list-sort .dropdown-toggle {
+  text-transform: uppercase;
+}
+
+.navbar-list .navbar-right .dropdown a { padding: 0 5px 15px; }
+
+.sort-label {
+	padding: 0 5px 0 10px;
+	cursor: default;
+}
+
+@media (max-width: 767px) {
+	.navbar-list .navbar-nav>li>a {
+		float: left;
+	}
+
+	.navbar-collapse {padding-left: 15px; }
+
+	.navbar-parks-navbar { margin: 0;}
+
+}
+
+@media (max-width: 991px) {
+	.navbar-form {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.navbar-form .form-control {
+		width: 150px;
+		float: right;
+	}
+}
+
+/*
+ *********************
+ * =jumbotron
+ *********************
+*/
+
+.jumbotron {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	background-size: 100%;
+	height: 300px;
+}
+
+.jumbotron.login {
+	height: 600px;
+	background-image: url("../img/magic-kingdom3.jpg");
+	background-position: 0 18%;
+}
+
+.jumbotron.login a {
+	color: #288EDB;
+}
+
+#password-reset {
+	margin-top: 10px;
+}
+
+.jumbotron.login .col-sm-6 {
+	float: none;
+	margin-top: 120px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	width: 45%;
+	max-width: 400px;
+}
+
+.jumbotron.login .checkbox label {color: rgb(221,221,221);}
+
+.jumbotron.magic-kingdom {
+	background-image: url("../img/magic-kingdom5.jpg");
+	background-position: 0 90%;
+}
+
+.jumbotron.epcot {
+	background-image: url("../img/epcot2.jpg");
+	background-position: 0 20%;
+	color: white;
+}
+
+.jumbotron.hollywood-studios {
+	background-image: url("../img/tower-of-terror.jpg");
+	background-position: 0 40%;
+}
+
+.jumbotron.animal-kingdom {
+	background-image: url("../img/animal-kingdom.jpg");
+	background-position: 0 75%;
+}
+
+.jumbotron.characters {
+	background-image: url("../img/snow-white.jpg");
+	background-position: 0 35%;
+}
+
+.jumbotron.resorts {
+	background-image: url("../img/disneys-coronado-springs.jpg");
+	background-position: 0;
+}
+
+.jumbotron h1 {
+	letter-spacing: -1px;
+	font-weight: 700;
+	font-size: 40px;
+	padding-left: 120px;
+}
+
+@media (max-width: 1067px) {
+	.jumbotron.login {
+		background-size: auto 100%;
+		background-position: 10%;
+	}
+}
+
+@media (max-width: 767px) {
+	.jumbotron, .jumbotron.magic-kingdom, .jumbotron.epcot, .jumbotron.hollywood-studios, .jumbotron.animal-kingdom, .jumbotron.characters {
+		background-position: center;
+		background-size: 767px;
+		height: 200px;
+	}
+
+	.jumbotron h1 {padding-left: 60px;}
+
+	.jumbotron.login .col-sm-6 {
+		width: 80%;
+		margin-top: 90px;
+	}
+
+	.jumbotron .form-group {float: none;}
+}
+
+/* ADJUST IMG AND DELETE .white-cast */
+.white-cast, .blue-cast	{
+	content: "";
+	position: absolute;
+	z-index: 1;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 100%;
+}
+
+.blue-cast	{
+	background-color: #2f2f42;
+	opacity: .95;
+}
+
+.magic-kingdom .white-cast {
+	background-color: rgba(255,255,255,.5);
+}
+
+.epcot .white-cast, .resorts .white-cast {
+	background-color: rgba(255,255,255,.2);
+}
+
+.hollywood-studios .white-cast, .animal-kingdom .white-cast, .characters .white-cast {
+	background-color: rgba(255,255,255,.4);
+}
+
+.jumbotron-content {
+	position: relative;
+	z-index: 999;
+	padding: 0;
+}
+
+/*
+ *********************
+ * =main list
+ *********************
+*/
+
+.master-item-list {
+  list-style-type: none;
+  padding-left: 15px;
+}
+
+.list-item {
+	padding: 15px 0;
+	margin: 0 -15px;
+	border-top: 1px solid #B2B2B2;
+}
+
+.list-item:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.item-image {
+	display: table-cell;
+	float: left;
+	padding: 0 15px;
+	max-width: 190px;
+}
+
+@media (max-width: 767px) {
+	.item-image img {
+		width: 100px;
+	}
+}
+
+.item-body {
+	display: table-cell;
+	width: 10000px;
+	vertical-align: top;
+	overflow: visible;
+}
+
+.item-name {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.item-name a { font-weight: bold; }
+
+.item-location, .item-location:hover, .item-name a  { color: #3A3A3A; }
+
+.actions-col {
+	padding-left: 5px;
+}
+
+.actions {
+	float: right;
+	padding-right: 12px;
+	margin: 24px 0 0 0;
+}
+
+.actions .col {
+	float: left;
+	padding-left: 8px;
+	padding-right: 0;
+	width: auto;
+}
+
+.list-pagination { text-align: center; }
+
+.pagination { margin-top: 30px; }
+
+.pagination>li>a, .pagination>.disabled>a { background-color: transparent; }
+
+@media (max-width: 767px) {
+	.item-name {
+		margin-bottom: 2px;
+	}
+
+	.actions {
+		padding-right: 12px;
+		margin-top: 5px;
+	}
+
+	.item-image {
+	padding-left: 0;
+	}
+}
+
+/*
+ *********************
+ * =buttons
+ *********************
+*/
+
+.btn-check-unchecked, .btn-check-checked, .btn-to-do, .btn-counter, .glyphicon-ok, .glyphicon-plus {
+	display: block;
+}
+
+.btn-check-unchecked, .btn-check-checked {
+	padding: 0;
+	border-radius: 100%;
+	margin-top: -3px;
+}
+
+.btn-check-unchecked {
+	background-color: inherit;
+	border: 1px solid;
+}
+
+.btn-check-unchecked:hover, .btn-to-do:hover, .btn-check-unchecked:active, .btn-check-unchecked:focus, .btn-to-do:focus, .btn-to-do.to-do, .btn-to-do.to-do:active, .btn-to-do.to-do:focus { color: #288EDB; }
+
+.btn-check-unchecked:active, .btn-check-checked:active {
+	box-shadow: none;
+}
+
+.btn-to-do, .btn-to-do:hover, .btn-to-do:active, .btn-to-do:focus {
+	border: 1px solid;
+	border-radius: 100%;
+	padding: 0;
+	margin-top: 3px;
+	text-decoration: none;
+}
+
+.btn-to-do, .btn-check-unchecked, .btn-to-do:active, .btn-to-do:focus { color: #777; }
+
+.btn-check-checked {
+	border: 2px solid white;
+	border-color: white;
+	background-color: #fff;
+	color: #3A3A3A;
+}
+
+.btn-counter, .btn-counter:hover, .btn-counter:active, .btn-counter:focus {
+	color: #fff;
+}
+
+.btn-counter {
+	border-radius: 100%;
+	background-color: #f36458;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.btn-counter:hover {
+	background-color: #EA2111;
+}
+
+.btn.btn-counter { padding: 0; }
+
+.btn-check-unchecked, .btn-check-checked {
+	width: 48px;
+	height: 48px;
+}
+
+.btn-to-do, .btn-to-do:hover, .btn-counter {
+	width: 36px;
+	height: 36px;
+}
+
+.glyphicon-ok {
+	margin-top: -2.5px;
+	font-size: 26px;
+}
+
+.glyphicon-plus {
+	margin-top: -3.5px;
+	margin-left: 2px;
+	font-size: 22px;
+}
+
+.btn-counter {
+	margin-top: 3px;
+}
+
+.btn-counter:hover:after {
+	content: "+";
+	margin-left: -5px;
+}
+
+/* Button sizing media queries */
+@media (max-width: 480px) {
+	.btn-check-unchecked, .btn-check-checked {
+		width: 42px;
+		height: 42px;
+	}
+
+	.btn-to-do, .btn-to-do:hover, .btn-counter {
+		width: 32px;
+		height: 32px;
+	}
+
+	.glyphicon-ok {
+		font-size: 22px;
+	}
+
+	.glyphicon-plus {
+		font-size: 18px;
+		margin-left: 2px;
+	}
+
+	.btn-counter {
+		margin-top: 3px;
+	}
+}
+
+/*
+ *********************
+ * =checked
+ *********************
+*/
+
+.checked { background-color: #C0DCF6; }
+
+.unchecked .actions .btn-col-counter, .unchecked .actions .btn-col-checked, .checked .actions .btn-col-unchecked {
+	display: none;
+}
+
+/*
+ *********************
+ * =widgets
+ *********************
+*/
+
+.widget-column {
+	padding-right: 0;
+}
+
+.widget-header {
+	margin-left: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #B2B2B2;
+	font-weight: bold;
+	color: #555;
+}
+
+/* Progress Bar */
+.progress-animate.progress-total .progress {
+  height: 25px;
+  line-height: 25px;
+  font-size: 15px;
+}
+
+.progress-animate .progress {
+  height: 20px;
+  line-height: 22px;
+}
+
+.progress {
+	background-image: none;
+}
+
+.progress-wrap {
+  position: relative;
+  margin: 20px 0 10px 15px;
+  background: #ddd;
+}
+
+.progress-wrap .progress-bar {
+  position: absolute;
+  padding-right: 5px;
+  width: 0;
+  top: 0;
+  left: -5px;
+  font-weight: bold;
+  text-align: right;
+	color: #555;
+  border-radius: 4px;
+  background-image: linear-gradient(to bottom, #C6ED94, #8EDB29);
+	box-shadow: inset 0 -7px 10px 0 rgba(0,0,0,.08);
+  transition: ease-out;
+}
+
+.progress-animate p {
+	margin-left: 15px;
+}
