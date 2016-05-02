@@ -191,14 +191,38 @@ body {
 	height: 300px;
 }
 
+.jumbotron-content {
+	position: relative;
+	z-index: 999;
+	padding: 0;
+}
+
+.jumbotron h1 {
+	letter-spacing: -1px;
+	font-weight: 700;
+	font-size: 40px;
+	padding-left: 120px;
+}
+
+.jumbotron img {
+	position: absolute;
+	width: 100%;
+	top: -260px;
+}
+
 .jumbotron.login {
 	height: 600px;
 	background-image: url("../img/magic-kingdom3.jpg");
 	background-position: 0 18%;
+
 }
 
-.jumbotron.login a {
+.jumbotron.login a, .jumbotron.login h2 {
 	color: #288EDB;
+}
+
+.login-heading {
+	margin-bottom: 15px;
 }
 
 #password-reset {
@@ -207,7 +231,7 @@ body {
 
 .jumbotron.login .col-sm-6 {
 	float: none;
-	margin-top: 120px;
+	margin-top: 75px;
 	margin-right: auto;
 	margin-left: auto;
 	text-align: center;
@@ -248,13 +272,6 @@ body {
 	background-position: 0;
 }
 
-.jumbotron h1 {
-	letter-spacing: -1px;
-	font-weight: 700;
-	font-size: 40px;
-	padding-left: 120px;
-}
-
 @media (max-width: 1067px) {
 	.jumbotron.login {
 		background-size: auto 100%;
@@ -279,7 +296,6 @@ body {
 	.jumbotron .form-group {float: none;}
 }
 
-/* ADJUST IMG AND DELETE .white-cast */
 .white-cast, .blue-cast	{
 	content: "";
 	position: absolute;
@@ -305,12 +321,6 @@ body {
 
 .hollywood-studios .white-cast, .animal-kingdom .white-cast, .characters .white-cast {
 	background-color: rgba(255,255,255,.4);
-}
-
-.jumbotron-content {
-	position: relative;
-	z-index: 999;
-	padding: 0;
 }
 
 /*

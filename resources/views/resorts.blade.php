@@ -64,9 +64,9 @@
           <a href="/items/{{ $item->item_name }}">
             <img class="img-responsive"
               @if($item->item_img)
-                src="{{ URL::asset('img/'.$item->item_img.'.jpg') }}" 
+                src="{{ URL::asset('img/'.$item->item_img.'-small.jpg') }}" 
               @else 
-                src="{{ URL::asset('img/'.$placeholder.'.jpg') }}"
+                src="{{ URL::asset('img/'.$placeholder.'-small.jpg') }}"
               @endif
                  alt="{{ $item->item_name }}">
         </div> <!-- /item image -->

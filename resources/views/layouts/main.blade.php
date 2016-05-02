@@ -20,16 +20,32 @@
   @show
 </head>
 <body>
-  @yield('navbar')
+  @section('navbar')
+    @if (Auth::check())
+      @include('includes.navbarLoggedIn')
+    @else
+      @include('includes.navbarLoggedOut')
+    @endif
+    @yield('navbar')
+  @show
+  
   @yield('jumbotron')
+
   @yield('navbar-parks')
+
   <div class="container main-content"> <!-- /.main-content-->
     <div class="col-md-9 list-column"> <!-- /.list-column-->
-      @yield('list-nav')
-      @yield('content')
-      @yield('pagination')
+
+  @yield('list-nav')
+
+  @yield('content')
+
+  @yield('pagination')
+
     </div> <!-- /.list-column-->
-      @yield('widget')
+
+  @yield('widget')
+
   </div> <!-- /.main-content-->
     <div class="container footer">
     <hr>

@@ -22,7 +22,7 @@ class ItemsController extends Controller
 		$title = 'Magic Kingdom';
 		$address = 'magic-kingdom';
 		$pageType = 'park';
-		$placeholder = 'magic-kingdom1-small';
+		$placeholder = 'magic-kingdom1';
 
 		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
 	}
@@ -33,7 +33,7 @@ class ItemsController extends Controller
 		$title = 'Epcot';
 		$address = 'epcot';
 		$pageType = 'park';
-		$placeholder = 'epcot1-small';
+		$placeholder = 'epcot1';
 
 		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
 	}
@@ -44,7 +44,7 @@ class ItemsController extends Controller
 		$title = 'Hollywood Studios';
 		$address = 'hollywood-studios';
 		$pageType = 'park';
-		$placeholder = 'hollywood-studios1-small';
+		$placeholder = 'hollywood-studios1';
 
 		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
 	}
@@ -55,7 +55,7 @@ class ItemsController extends Controller
 		$title = 'Animal Kingdom';
 		$address = 'animal-kingdom';
 		$pageType = 'park';
-		$placeholder = 'animal-kingdom-small';	
+		$placeholder = 'animal-kingdom';
 
 		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
 	}
@@ -86,14 +86,17 @@ class ItemsController extends Controller
 	{
 		$item = Item::where('item_name', '=', $item)->first();
 
-		if (!$item) {
+		if (!$item) 
+		{
 			return $this->pageNotFound();
 		}
-		return view('showItem', array(
+
+		return view('items.show', array(
 			'title'		=> $item->item_name,
 			'park'		=> 0,
 			'pageType'	=> 'item',
 			'address'	=> 'items/'.$item->name,
+			'placeholder' => 'magic-kingdom1',
 			'items'		=> $item
 		));
 	}
@@ -128,7 +131,8 @@ class ItemsController extends Controller
 		// Fetch items collection & paginate
      	$items = $this->getParkItems($park, $category, $area, $sort);
 
-     	if (!$items) {
+     	if (!$items) 
+     	{
 			return $this->pageNotFound();
 		}
 

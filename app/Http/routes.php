@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'ItemsController@magickingdom');
+Route::get('/', [
+    'as' => 'home', 'uses' => 'HomeController@index'
+    ]);
 
 Route::get('404', [
     'as' => '404', 'uses' => 'ItemsController@magickingdom'
@@ -45,9 +47,6 @@ Route::get('items/{item}', [
     'as' => 'item', 'uses' => 'ItemsController@show'
     ]);
 
-// Route::get('login', [
-//     'as' => 'login', 'uses' => 'AuthController@login'
-//     ]);
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
