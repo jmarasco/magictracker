@@ -1,30 +1,45 @@
-$.doDisney = {
+$.magicTracker = {
   init: function () {
     // Button functions
 
     //Check list item
     $('.btn-check-unchecked').click(function() {
-      console.log('check');
-      var $listItem = $(this).closest('.list-item');
-      $listItem.addClass('checked').removeClass('unchecked');
+      var e = $(this);
+      var $listItem = e.closest('.list-item');
+      var $id = $listItem.data('id');
+      var $checkType = $listItem.hasClass('unchecked') ? 'check' : 'uncheck';
+      $listItem.addClass('pending');
+      $.ajax({
+        url: '/itemactions/check',
+        type: 'POST',
+        data: {
+          validationToken: $listItem.find('input[name=_token]').val(),
+          itemId: $id,
+          checkType: $checkType
+        },
+        success: function() {
+          $listItem.toggleClass('checked');
+          $listItem.toggleClass('unchecked');
+          $listItem.removeClass('pending');
+          $.magicTracker.animateProgressBars();
+        }
+      });
+      return false;
     });
 
     //Uncheck list item
     $('.btn-check-checked').click(function() {
-      console.log("uncheck");
       var $listItem = $(this).closest('.list-item');
       $listItem.addClass('unchecked').removeClass('checked');
     });
 
     //Toggle list item on To Do list
     $('.btn-to-do').click(function() {
-      console.log('toDoAdd');
       $(this).toggleClass('to-do');
     });
 
     //Add check
     $('.btn-counter').click(function() {
-      console.log('addCheck');
       var count = $(this).find('.check-count');
       var newCount = (parseInt(count.text())+1);
       count.text(newCount);
@@ -51,15 +66,19 @@ $.doDisney = {
       $('.list-filter .filter-name').text(thisFilter);
     });
 
-    // Animate progress bars
-      $('.progress-animate').each(function() {
-        var e = $(this);
-        var totalChecks = e.find('.total-checks').text();
-        var totalAll = e.find('.total-all').text();
-        var percent = (totalChecks / totalAll);
-        e.find('.progress-bar').animate({width: (percent*100)+'%'}, 2500).html(Math.ceil((percent*100)) + "%");
-      });
-  } //Init
-}; //doDisney object
+    $.magicTracker.animateProgressBars();
+  }, //Init
 
-$(document).ready(function() {$.doDisney.init()});
+  // Animate progress bars
+  animateProgressBars: function () {
+    $('.progress-animate').each( function () {
+      var e = $(this);
+      var totalChecks = e.find('.total-checks').text();
+      var totalAll = e.find('.total-all').text();
+      var percent = (totalChecks / totalAll);
+      e.find('.progress-bar').animate({width: (percent*100)+'%'}, 1500).html(Math.ceil((percent*100)) + "%");
+    });
+  }
+}; //magicTracker object
+
+$(document).ready(function() {$.magicTracker.init();});

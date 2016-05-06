@@ -210,6 +210,13 @@ body {
 	top: -260px;
 }
 
+.jumbotron.splash {
+	height: 899px;
+	background-image: url("../img/monorail-large.jpg");
+	background-size: auto 100%;
+	background-position: 50% 0;
+}
+
 .jumbotron.login {
 	height: 600px;
 	background-image: url("../img/magic-kingdom3.jpg");
@@ -308,6 +315,11 @@ body {
 
 .blue-cast	{
 	background-color: #2f2f42;
+	opacity: .95;
+}
+
+.splash .blue-cast	{
+	background-color: #288EDB;
 	opacity: .95;
 }
 

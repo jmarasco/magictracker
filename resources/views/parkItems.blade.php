@@ -75,7 +75,8 @@
   <ol id="item-list" class="master-item-list">
     <!-- /MASTER LIST ITEM -->
     @foreach($items as $item)
-      <li class=" list-item unchecked">
+      <li class="list-item unchecked" id="{{ $item->id }}">
+      {{ csrf_field() }}
         <div class="item-image">
           <a href="/items/{{ $item->item_name }}">
             <img class="img-responsive"
@@ -100,17 +101,17 @@
                   </button>
                 </div> <!-- /col-xs-3 -->
                 <div class="col col-xs-3 btn-col-to-do">
-                  <button type="button" class="btn btn-link btn-to-do" aria-label="Left Align" title="Add to your To Do List">
+                  <button type="button" class="btn btn-link btn-to-do" aria-label="Left Align" title="Add {{ $item->item_name }} to your To Do List">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   </button>
                 </div> <!-- /col-xs-3 -->
                 <div class="col col-xs-3 btn-col-unchecked">
-                  <button type="button" class="btn btn-outline btn-check-unchecked" aria-label="Left Align" title="Mark as checked">
+                  <button type="button" class="btn btn-outline btn-check-unchecked" aria-label="Left Align" title="Check {{ $item->item_name }}">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                   </button>
                 </div> <!-- /col-xs-3 -->
                 <div class="col col-xs-3 btn-col-checked">
-                  <button type="button" class="btn btn-check-checked" aria-label="Left Align" title="Remove all your checks">
+                  <button type="button" class="btn btn-check-checked" aria-label="Left Align" title="Uncheck {{ $item->item_name }}">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                   </button>
                 </div> <!-- /col-xs-3 -->

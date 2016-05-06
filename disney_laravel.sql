@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2016 at 08:43 PM
+-- Generation Time: May 06, 2016 at 05:13 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.3
 
@@ -941,6 +941,17 @@ INSERT INTO `items` (`id`, `parent_id`, `location_id`, `category_id`, `status_id
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `item_ride`
+--
+
+CREATE TABLE `item_ride` (
+  `item_id` int(10) UNSIGNED NOT NULL,
+  `ride_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `locations`
 --
 
@@ -1024,6 +1035,29 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rides`
+--
+
+CREATE TABLE `rides` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ride_user`
+--
+
+CREATE TABLE `ride_user` (
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `ride_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `status`
 --
 
@@ -1051,7 +1085,7 @@ INSERT INTO `status` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1066,8 +1100,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `avatar`, `visible`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, '', 'deivoco@gmail.com', '$2y$10$5qOj53WjRQup6dgUofBeA.7cQfKBMOWfixEjQCM1E2ZTSR0XJQdtO', NULL, 1, 0, 'Eud3quabw8MlQXocz3EU21Hpbc0fpHzoMZllMvrAXBbWJsSKnZrzSeuY9qdI', '2016-05-01 21:45:08', '2016-05-01 23:01:22');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `avatar`, `visible`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(4, 'testuser', 'test@test.com', '$2y$10$S5IU/bOroNVs./cykm93I..wmsOR5L4d3c5Ig7B/hCgy6SSkSEoiO', NULL, 1, 0, 'KjLfSccqrvdgZHJwISbTjkhF8QCHCSzYSgNvodBx5qPbtlM0lE2ep8NT6OA6', '2016-05-03 00:37:51', '2016-05-03 18:48:33');
 
 --
 -- Indexes for dumped tables
@@ -1115,6 +1149,12 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_token_index` (`token`);
 
 --
+-- Indexes for table `rides`
+--
+ALTER TABLE `rides`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `status`
 --
 ALTER TABLE `status`
@@ -1125,7 +1165,7 @@ ALTER TABLE `status`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_name_unique` (`name`),
+  ADD UNIQUE KEY `users_name_unique` (`username`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
@@ -1153,6 +1193,11 @@ ALTER TABLE `items`
 ALTER TABLE `locations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
+-- AUTO_INCREMENT for table `rides`
+--
+ALTER TABLE `rides`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `status`
 --
 ALTER TABLE `status`
@@ -1161,7 +1206,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --

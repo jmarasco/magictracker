@@ -12,8 +12,10 @@
 */
 
 Route::get('/', [
-    'as' => 'home', 'uses' => 'HomeController@index'
-    ]);
+    'as' => 'splash', function() {
+        return view('splash', ['pageType' => '']);
+    }
+]);
 
 Route::get('404', [
     'as' => '404', 'uses' => 'ItemsController@magickingdom'
@@ -21,32 +23,41 @@ Route::get('404', [
 
 Route::get('magic-kingdom/{category?}/{area?}', [
     'as' => 'mk', 'uses' => 'ItemsController@magickingdom'
-    ]);
+]);
 
 Route::get('epcot/{category?}/{area?}', [
     'as' => 'epcot', 'uses' => 'ItemsController@epcot'
-    ]);
+]);
 
 Route::get('hollywood-studios/{category?}/{area?}', [
     'as' => 'hs', 'uses' => 'ItemsController@hollywoodstudios'
-    ]);
+]);
 
 Route::get('animal-kingdom/{category?}/{area?}', [
     'as' => 'ak', 'uses' => 'ItemsController@animalkingdom'
-    ]);
+]);
 
 Route::get('characters', [
     'as' => 'characters', 'uses' => 'ItemsController@characters'
-    ]);
+]);
 
 Route::get('resorts/{category?}/{area?}', [
     'as' => 'resorts', 'uses' => 'ItemsController@resorts'
-    ]);
+]);
 
 Route::get('items/{item}', [
     'as' => 'item', 'uses' => 'ItemsController@show'
-    ]);
+]);
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::post('/itemactions/check', [
+    'as' => 'check', 'uses' => 'RidesController@check'
+]);
+
+//TEMP
+Route::get('/itemactions/check', function(){
+    return view('items.checkItem', ['pageType' => '']);
+});

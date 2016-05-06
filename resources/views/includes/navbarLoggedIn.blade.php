@@ -7,13 +7,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">MagicTracker</a>
+        <a class="navbar-brand" href="/">MagicTracker</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           {{-- @if (Auth::check()) --}}
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ProfileName <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Request::user()->username }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">Dashboard</a></li>
               <li><a href="#">Progress</a></li>
