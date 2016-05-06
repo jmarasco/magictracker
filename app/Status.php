@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-	protected $table = 'status';
+	public $timestamps = false;
+    
+    protected $table = 'status';
 
+    /**
+     * Get all the items for the status.
+     */
     public function items() {
     	return $this->hasMany(Item::class);
     }

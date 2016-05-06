@@ -23,4 +23,27 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get all of the checks for the user.
+     */
+    public function check() {
+        return $this->belongsToMany(Check::class);
+    }
+
+    /**
+     * Get all of the comments for the user.
+     */
+    public function comments() {
+        return $this->belongsToMany(Comment::class);
+    }
+
+    /**
+     * Get all of the items the user has checked.
+     */
+    public function items() {
+        return $this->hasManyThrough(Item::class, Check::class);
+    }
+
+
 }

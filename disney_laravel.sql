@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2016 at 05:13 PM
+-- Generation Time: May 06, 2016 at 07:13 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.3
 
@@ -50,6 +50,40 @@ INSERT INTO `categories` (`id`, `name`, `parent_id`) VALUES
 (11, 'Deluxe Villas', 5),
 (12, 'Moderate', 5),
 (13, 'Value', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `checks`
+--
+
+CREATE TABLE `checks` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `check_item`
+--
+
+CREATE TABLE `check_item` (
+  `item_id` int(10) UNSIGNED NOT NULL,
+  `check_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `check_user`
+--
+
+CREATE TABLE `check_user` (
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `check_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -941,17 +975,6 @@ INSERT INTO `items` (`id`, `parent_id`, `location_id`, `category_id`, `status_id
 -- --------------------------------------------------------
 
 --
--- Table structure for table `item_ride`
---
-
-CREATE TABLE `item_ride` (
-  `item_id` int(10) UNSIGNED NOT NULL,
-  `ride_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `locations`
 --
 
@@ -1035,29 +1058,6 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rides`
---
-
-CREATE TABLE `rides` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ride_user`
---
-
-CREATE TABLE `ride_user` (
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `ride_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `status`
 --
 
@@ -1115,6 +1115,12 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `categories_name_unique` (`name`);
 
 --
+-- Indexes for table `checks`
+--
+ALTER TABLE `checks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
@@ -1149,12 +1155,6 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_token_index` (`token`);
 
 --
--- Indexes for table `rides`
---
-ALTER TABLE `rides`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `status`
 --
 ALTER TABLE `status`
@@ -1178,6 +1178,11 @@ ALTER TABLE `users`
 ALTER TABLE `categories`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
+-- AUTO_INCREMENT for table `checks`
+--
+ALTER TABLE `checks`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
@@ -1192,11 +1197,6 @@ ALTER TABLE `items`
 --
 ALTER TABLE `locations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT for table `rides`
---
-ALTER TABLE `rides`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `status`
 --
