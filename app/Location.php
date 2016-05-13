@@ -6,12 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
     
     /**
-     * Get all of the items for the location.
+     * Get all of the Items for the Location.
      */
-    public function items() {
+    public function items() 
+    {
     	return $this->hasMany(Item::class);
+    }
+
+    /**
+     * Get a Location's parent Location
+     */
+    public function parent() 
+    {
+    	return $this->hasOne(Location::class);
     }
 }

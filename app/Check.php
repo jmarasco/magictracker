@@ -9,14 +9,16 @@ class Check extends Model
     /**
      * Get the user for the check through check_user.
      */
-    public function users() {
-    	return $this->belongsToMany(User::class);
+    public function user() 
+    {
+    	return $this->belongsTo(User::class);
     }
 
     /**
      * Get the item for the check through check_item.
      */
-    public function items() {
-    	return $this->belongsToMany(Item::class);
+    public function item() 
+    {
+    	return $this->belongsTo(Item::class);
     }
 }

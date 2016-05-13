@@ -27,15 +27,15 @@ class User extends Authenticatable
     /**
      * Get all of the checks for the user.
      */
-    public function check() {
-        return $this->belongsToMany(Check::class);
+    public function checks() {
+        return $this->hasMany(Check::class);
     }
 
     /**
      * Get all of the comments for the user.
      */
     public function comments() {
-        return $this->belongsToMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 
     /**

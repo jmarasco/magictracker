@@ -3,25 +3,31 @@ $.magicTracker = {
     // Button functions
 
     //Check list item
-    $('.btn-check-unchecked').click(function() {
-      var e = $(this);
-      var $listItem = e.closest('.list-item');
-      var $id = $listItem.data('id');
-      var $checkType = $listItem.hasClass('unchecked') ? 'check' : 'uncheck';
-      $listItem.addClass('pending');
-      $.ajax({
+    $(".btn-check-unchecked, .btn-check-checked").on("click", function() {
+      var listItem = $(this).closest('.list-item');
+console.log(listItem);
+      var token = listItem.find('input[name=_token]').val();
+      var id = listItem.attr('id');
+      var unchecked = listItem.hasClass('unchecked');
+      var checkType = unchecked ? 'check' : 'uncheck';
+      listItem.addClass('pending')
+;      $.ajax({
         url: '/itemactions/check',
         type: 'POST',
         data: {
-          validationToken: $listItem.find('input[name=_token]').val(),
-          itemId: $id,
-          checkType: $checkType
+          _token: token,
+          itemId: id,
+          checkType: checkType
         },
-        success: function() {
-          $listItem.toggleClass('checked');
-          $listItem.toggleClass('unchecked');
-          $listItem.removeClass('pending');
+        success: function(data) {
+          listItem.toggleClass('checked');
+          listItem.toggleClass('unchecked');
+          listItem.removeClass('pending');
           $.magicTracker.animateProgressBars();
+console.log(data);
+        },
+        error: function(data) {
+          listItem.removeClass('pending');
         }
       });
       return false;
@@ -29,8 +35,8 @@ $.magicTracker = {
 
     //Uncheck list item
     $('.btn-check-checked').click(function() {
-      var $listItem = $(this).closest('.list-item');
-      $listItem.addClass('unchecked').removeClass('checked');
+      var listItem = $(this).closest('.list-item');
+      listItem.addClass('unchecked').removeClass('checked');
     });
 
     //Toggle list item on To Do list
@@ -81,4 +87,6 @@ $.magicTracker = {
   }
 }; //magicTracker object
 
-$(document).ready(function() {$.magicTracker.init();});
+$(document).ready(function() {
+  $.magicTracker.init();
+});

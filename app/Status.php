@@ -6,10 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-	public $timestamps = false;
-    
-    protected $table = 'status';
+	/**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+	protected $table = 'status';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    
     /**
      * Get all the items for the status.
      */

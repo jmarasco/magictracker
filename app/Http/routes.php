@@ -54,7 +54,9 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 Route::post('/itemactions/check', [
-    'as' => 'check', 'uses' => 'RidesController@check'
+    'as' => 'check', 
+    'middleware' => 'auth',
+    'uses' => 'ChecksController@check'
 ]);
 
 //TEMP
