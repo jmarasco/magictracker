@@ -41,15 +41,10 @@
                   </button>
                 </div> <!-- /col-xs-3 -->
                 <div class="col col-xs-3 btn-col-unchecked">
-                  <button type="button" class="btn btn-check-unchecked" aria-label="Left Align" title="Mark as checked">
+                  <button type="button" class="btn btn-check" aria-label="Left Align" title="Mark as checked">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                   </button>
                 </div> <!-- /col-xs-3 -->
-                <!-- <div class="col col-xs-3 btn-col-checked">
-                  <button type="button" class="btn btn-check-checked" aria-label="Left Align" title="Remove all your checks">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                  </button>
-                </div> --> <!-- /col-xs-3 -->
               </div> <!-- /actions -->
             </div> <!-- /col-xs-4 -->
           </div> <!-- /row -->

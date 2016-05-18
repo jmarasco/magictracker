@@ -3,9 +3,8 @@ $.magicTracker = {
     // Button functions
 
     //Check list item
-    $(".btn-check-unchecked, .btn-check-checked").on("click", function() {
+    $(".btn-check").on("click", function() {
       var listItem = $(this).closest('.list-item');
-console.log(listItem);
       var token = listItem.find('input[name=_token]').val();
       var id = listItem.attr('id');
       var checkType = listItem.hasClass('unchecked') ? 'check' : 'uncheck';
@@ -23,7 +22,6 @@ console.log(listItem);
           listItem.toggleClass('unchecked');
           listItem.removeClass('pending');
           $.magicTracker.animateProgressBars();
-console.log(data);
         },
         error: function(data) {
           listItem.removeClass('pending');

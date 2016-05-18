@@ -431,25 +431,31 @@ body {
  *********************
 */
 
-.btn-check-unchecked, .btn-check-checked, .btn-to-do, .btn-counter, .glyphicon-ok, .glyphicon-plus {
+.btn-check, .btn-to-do, .btn-counter, .glyphicon-ok, .glyphicon-plus {
 	display: block;
 }
 
-.btn-check-unchecked, .btn-check-checked {
+.btn-check {
 	padding: 0;
 	border-radius: 100%;
 	margin-top: -3px;
+	width: 48px;
+	height: 48px;
 }
 
-.btn-check-unchecked {
+.unchecked .btn-check {
 	background-color: inherit;
 	border: 1px solid;
 }
 
-.btn-check-unchecked:hover, .btn-to-do:hover, .btn-check-unchecked:active, .btn-check-unchecked:focus, .btn-to-do:focus, .btn-to-do.to-do, .btn-to-do.to-do:active, .btn-to-do.to-do:focus { color: #288EDB; }
+.btn-check:hover, .btn-to-do:hover, .btn-to-do:focus, .btn-to-do.to-do, .btn-to-do.to-do:active, .btn-to-do.to-do:focus { 
+	color: #288EDB; 
+}
 
-.btn-check-unchecked:active, .btn-check-checked:active {
+.btn-check:active, .btn-check:focus {
 	box-shadow: none;
+	outline: none;
+	color: #777;
 }
 
 .btn-to-do, .btn-to-do:hover, .btn-to-do:active, .btn-to-do:focus {
@@ -460,9 +466,9 @@ body {
 	text-decoration: none;
 }
 
-.btn-to-do, .btn-check-unchecked, .btn-to-do:active, .btn-to-do:focus { color: #777; }
+.btn-to-do, .btn-check, .btn-to-do:active, .btn-to-do:focus { color: #777; }
 
-.btn-check-checked {
+.checked .btn-check {
 	border: 2px solid white;
 	border-color: white;
 	background-color: #fff;
@@ -485,11 +491,6 @@ body {
 }
 
 .btn.btn-counter { padding: 0; }
-
-.btn-check-unchecked, .btn-check-checked {
-	width: 48px;
-	height: 48px;
-}
 
 .btn-to-do, .btn-to-do:hover, .btn-counter {
 	width: 36px;
@@ -518,7 +519,7 @@ body {
 
 /* Button sizing media queries */
 @media (max-width: 480px) {
-	.btn-check-unchecked, .btn-check-checked {
+	.btn-check {
 		width: 42px;
 		height: 42px;
 	}
@@ -554,10 +555,6 @@ body {
 	display: none;
 }
 
-/*.unchecked .actions .btn-col-counter, .unchecked .actions .btn-col-checked, .checked .actions .btn-col-unchecked {
-	display: none;
-}
-*/
 /*
  *********************
  * =widgets
