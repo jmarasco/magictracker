@@ -550,10 +550,14 @@ body {
 
 .checked { background-color: #C0DCF6; }
 
-.unchecked .actions .btn-col-counter, .unchecked .actions .btn-col-checked, .checked .actions .btn-col-unchecked {
+.unchecked .actions .btn-col-counter {
 	display: none;
 }
 
+/*.unchecked .actions .btn-col-counter, .unchecked .actions .btn-col-checked, .checked .actions .btn-col-unchecked {
+	display: none;
+}
+*/
 /*
  *********************
  * =widgets

@@ -28,4 +28,14 @@ class Location extends Model
     {
     	return $this->hasOne(Location::class);
     }
+
+    /**
+     * Get Location by name
+     * @param string $name
+     * @return Builder
+     */
+    public static function findLocationByName($name)
+    {
+        return Location::where('location', '=', $name)->first();
+    }
 }

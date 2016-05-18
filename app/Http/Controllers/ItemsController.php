@@ -6,85 +6,146 @@ use App\Item;
 use App\Category;
 use App\Location;
 use Illuminate\Support\Facades\Request;
-use App\Http\Requests;
+use Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ItemsController extends Controller
 {
+	/**
+	 * Variables to be passed to the view
+	 */
+	private $category = 'attractions';
+	private $area = '';
+	private $title;
+	private $pageType = 'park';
+	private $placeholder;
+	private $address;
+	private $sort = 'item_name';
+	private $park;
+	private $seasonal = false;
+	private $location;
 
 	/**
 	 * @param string $category
+	 * @param string $area
 	 * @param Request $request
 	 * @return mixed
-     */
+   */
 	public function magickingdom($category='attractions', $area='')
 	{
 		//Set Park variables
-		$title = 'Magic Kingdom';
-		$address = 'magic-kingdom';
-		$pageType = 'park';
-		$placeholder = 'magic-kingdom1';
+		$this->title = 'Magic Kingdom';
+		$this->category = $category;
+		$this->area = $area;
+		$this->address = 'magic-kingdom';
+		$this->pageType = 'park';
+		$this->placeholder = 'magic-kingdom1';
 
-		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
+		return $this->getParkPage();
 	}
 
+	/**
+	 * @param string $category
+	 * @param string $area
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function epcot($category='attractions', $area='')
 	{
 		//Set Park variables
-		$title = 'Epcot';
-		$address = 'epcot';
-		$pageType = 'park';
-		$placeholder = 'epcot1';
+		$this->title = 'Epcot';
+		$this->category = $category;
+		$this->area = $area;
+		$this->address = 'epcot';
+		$this->pageType = 'park';
+		$this->placeholder = 'epcot1';
 
-		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
+		return $this->getParkPage();
 	}
 
+	/**
+	 * @param string $category
+	 * @param string $area
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function hollywoodstudios($category='attractions', $area='')
 	{
 		//Set Park variables
-		$title = 'Hollywood Studios';
-		$address = 'hollywood-studios';
-		$pageType = 'park';
-		$placeholder = 'hollywood-studios1';
+		$this->title = 'Hollywood Studios';
+		$this->category = $category;
+		$this->area = $area;
+		$this->address = 'hollywood-studios';
+		$this->pageType = 'park';
+		$this->placeholder = 'hollywood-studios1';
 
-		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
+		return $this->getParkPage();
 	}
 
+	/**
+	 * @param string $category
+	 * @param string $area
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function animalkingdom($category='attractions', $area='')
 	{
 		//Set Park variables
-		$title = 'Animal Kingdom';
-		$address = 'animal-kingdom';
-		$pageType = 'park';
-		$placeholder = 'animal-kingdom';
+		$this->title = 'Animal Kingdom';
+		$this->category = $category;
+		$this->area = $area;
+		$this->address = 'animal-kingdom';
+		$this->pageType = 'park';
+		$this->placeholder = 'animal-kingdom';
 
-		return $this->getParkPage($title, $category, $area, $address, $pageType, $placeholder);
+		return $this->getParkPage();
 	}
 
+	/**
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function characters() 
 	{
 		//Set variables
-		$title = 'Characters';
-		$address = 'characters';
-		$pageType = 'character';
-		$placeholder = 'Portrait_placeholder';
+		$this->title = 'Characters';
+		$this->address = 'characters';
+		$this->pageType = 'character';
+		$this->placeholder = 'Portrait_placeholder';
 
-		return $this->getCharacterPage($title, $address, $pageType, $placeholder);
+		return $this->getCharacterPage();
 	}
 
+	/**
+	 * @param string $category
+	 * @param string $location
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function resorts($category='resort', $location='') 
 	{
 		//Set variables
-		$title = 'Resorts';
-		$address = 'resorts';
-		$pageType = 'resort';
-		$placeholder = 'Portrait_placeholder';
+		$this->title = 'Resorts';
+		$this->category = $category;
+		$this->location = $location;
+		$this->address = 'resorts';
+		$this->pageType = 'resort';
+		$this->placeholder = 'Portrait_placeholder';
 
-		return $this->getResortPage($title, $category, $location, $address, $pageType, $placeholder);
+		return $this->getResortPage();
 	}
 
+	/**
+	 * @param string $item
+	 * @param Request $request
+	 * @return mixed
+   */
 	public function show($item) 
 	{
-		$item = Item::where('item_name', '=', $item)->first();
+		$item = Item::findItemByName($item);
+
+		// Reverse str_slug()
+		// ucwords(str_replace('-', ' ', $str))
 
 		if (!$item) 
 		{
@@ -106,16 +167,16 @@ class ItemsController extends Controller
 		return redirect()->route('404');
 	}
 
-	private function getParkPage($title, $category, $area, $address, $pageType, $placeholder)
+	protected function getParkPage()
 	{	
 		// Get Location from DB
-		$park = Location::where('location', '=', $title)->first();
+		$this->park = Location::findLocationByName($this->title);
 
-		$sort = Request::get('sort', 'item_name');
+		$this->sort = Request::get('sort', 'item_name');
 		// Change sort variable to table field name
-		if ($sort == 'name') { $sort = 'item_name'; }
+		if ($this->sort == 'name') { $this->sort = 'item_name'; }
 
-		// Verify $category is valid
+		// Verify $category and redirect to Attractions if invalid
 		$parkCategories = array(
 			'attraction',
 			'attractions',
@@ -123,73 +184,82 @@ class ItemsController extends Controller
 			'dining'
 		);
 
-	    if (!in_array($category, $parkCategories)) 
-	    {
-	     	return redirect($address.'/attractions');
-	    }		
+		if (!in_array($this->category, $parkCategories)) 
+    {
+     	return redirect($this->address.'/attractions');
+    }		
 
-		// Fetch items collection & paginate
-     	$items = $this->getParkItems($park, $category, $area, $sort);
+		// Fetch items collection
+   	$items = $this->getParkItems();
 
-     	if (!$items) 
-     	{
-			return $this->pageNotFound();
-		}
+		// Retrieve checked Items for page
+ 		$checkedItems = $this->userChecked($this->getParkItems(), 'items.id')->keyBy('id');
 
-		$items = $items->paginate(10);
+ 		// Populate checked attribute of Items
+ 		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
 
-     	// Set Count variables
-     	$attractionCount 	= $this->getParkItems($park, 'attractions')->count();
+ 		// Paginate
+ 		$paginatedItems = $this->paginateItems($itemsWithChecks);
 
-     	$entertainmentCount = $this->getParkItems($park, 'entertainment')->count();
+   	// Set Count variables
+   	$attractionCount 	= $this->countByCategory('attractions');
+   	$entertainmentCount = $this->countByCategory('entertainment');
+   	$diningCount 		= $this->countByCategory('dining');
+   	$totalCount 		= $attractionCount + $entertainmentCount + $diningCount;
 
-     	$diningCount 		= $this->getParkItems($park, 'dining')->count();
-
-     	$totalCount 		= $attractionCount + $entertainmentCount + $diningCount;
-
-	    return view('parkItems', array(
-	    	'items'			=> $items,
-	    	'address'		=> $address,
-	    	'category'		=> $category,
-	    	'pageType' 		=> $pageType,
-	    	'placeholder' 	=> $placeholder,
-	    	'sort'			=> $sort,
-	    	'title' 		=> $title,
-	    	'total'			=> $totalCount,
-	    	'attractionCount' => $attractionCount,
-	    	'entertainmentCount' => $entertainmentCount,
-	    	'diningCount'	=> $diningCount
-	    	));
+    return view('parkItems', array(
+    	'items'			=> $paginatedItems,
+    	'address'		=> $this->address,
+    	'category'		=> $this->category,
+    	'pageType' 		=> $this->pageType,
+    	'placeholder' 	=> $this->placeholder,
+    	'sort'			=> $this->sort,
+    	'title' 		=> $this->title,
+    	'total'			=> $totalCount,
+    	'attractionCount' => $attractionCount,
+    	'entertainmentCount' => $entertainmentCount,
+    	'diningCount'	=> $diningCount,
+    	'area'	=> $this->area
+    	));
 	}
 
-	private function getCharacterPage($title, $address, $pageType, $placeholder)
+	protected function getCharacterPage()
 	{	
 		// Get status parameter
 		$status = Request::get('status', 'active');
 
-		// Fetch items collection & paginate
-     	$items = $this->getCharacterItems($status)->paginate(10);
+		// Fetch items Collection
+   	$items = $this->getCharacterItems($status);
 
-     	// Set Count variables
-     	$activeCount 	= $this->getCharacterItems($status)->count();
- 		// dd($items);
-	    return view('characters', array(
-	    	'items'			=> $items,
-	    	'address'		=> $address,
-	    	'pageType' 		=> $pageType,
-	    	'placeholder' 	=> $placeholder,
-	    	'title' 		=> $title,
-	    	'activeCount'	=> $activeCount,
-	    	));
+   	// Set Count variables
+   	$activeCount 	= $items->count();
+ 		
+ 		// Retrieve checked Items for page
+ 		$checkedItems = $this->userChecked($this->getCharacterItems($status))->keyBy('id');
+
+ 		// Populate checked attribute of Items
+ 		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
+
+ 		// Paginate
+ 		$paginatedItems = $this->paginateItems($itemsWithChecks);
+
+    return view('characters', array(
+    	'items'			=> $paginatedItems,
+    	'address'		=> $this->address,
+    	'pageType' 		=> $this->pageType,
+    	'placeholder' 	=> $this->placeholder,
+    	'title' 		=> $this->title,
+    	'activeCount'	=> $activeCount,
+    	));
 	}
 
-	private function getResortPage($title, $category, $location='', $address, $pageType, $placeholder)
+	protected function getResortPage()
 	{	
 		//Get sort parameter
-		$sort = Request::get('sort', 'item_name');
+		$originalSort = $this->sort = Request::get('sort', 'item_name');
 
 		//set category to DB field
-		if ($category == 'resorts') {$category = 'resort'; }
+		if ($this->category == 'resorts') {$this->category = 'resort'; }
 
 		$resortCategories = array(
 		    'resort', 
@@ -199,53 +269,64 @@ class ItemsController extends Controller
 		    'deluxe',
 		    'deluxe-villas'
 	    );
-	      
-	    if (!in_array($category, $resortCategories)) 
+
+	    if (!in_array($this->category, $resortCategories)) 
 	    {
 	     	return $this->pageNotFound();
 	    }
 
-		// Fetch items collection, sort & paginate
-		if ($category == 'dining') {
-			$items = $this->getResortDiningItems($location, $sort);
+		// Set sort parameter to unambiguous 'name'
+		if ($this->category == 'dining') {
+			if ($this->sort == 'item_name') {
+				$this->sort = 'name';
+			}
+		// Fetch items collection, sort & paginate	
+			$items = $this->getResortDiningItems();
 		} else {
-     	$items = $this->getResortItems($category, $sort);
+     	$items = $this->getResortItems();
      	}
 
-     	if (!$items) {
-     		return redirect()->route('resorts');
-     	} 
-     	
-     	$items = $items->paginate(10);
-     	
-     	// Set Count variables
-     	$resortsCount = $this->getResortItems('resort')->count();
-		$valueCount = $this->getResortItems('value')->count();
-		$moderateCount = $this->getResortItems('moderate')->count();
-		$deluxeCount = $this->getResortItems('deluxe')->count();
-		$deluxeVillasCount = $this->getResortItems('deluxe-villas')->count();
+   	if (!$items) {
+   		return redirect()->route('resorts');
+   	}
+
+    // Retrieve checked Items for page
+ 		$checkedItems = $this->userChecked($this->getResortItems(), 'items.id')->keyBy('id');
+
+ 		// Populate checked attribute of Items
+ 		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
+
+ 		// Paginate
+ 		$paginatedItems = $this->paginateItems($itemsWithChecks);
+ 	
+   	// Set Count variables
+   	$resortsCount = $this->countByCategory('resort');
+		$valueCount = $this->countByCategory('value');
+		$moderateCount = $this->countByCategory('moderate');
+		$deluxeCount = $this->countByCategory('deluxe');
+		$deluxeVillasCount = $this->countByCategory('deluxe-villas');
 		$resortDiningCount = $this->getResortDiningItems()->count();
 
-	    return view('resorts', array(
-	    	'items'			=> $items,
-	    	'address'		=> $address,
-	    	'category'		=> $category,
-	    	'pageType' 		=> $pageType,
-	    	'placeholder' 	=> $placeholder,
-	    	'sort'			=> $sort,
-	    	'title' 		=> $title,
-	    	'resortsCount'	=> $resortsCount,
-	    	'valueCount'	=> $valueCount,
-	    	'moderateCount'	=> $moderateCount,
-	    	'deluxeCount'	=> $deluxeCount,
-	    	'deluxeVillasCount' => $deluxeVillasCount,
-	    	'resortDiningCount' => $resortDiningCount
-	    	));
+    return view('resorts', array(
+    	'items'			=> $paginatedItems,
+    	'address'		=> $this->address,
+    	'category'		=> $this->category,
+    	'pageType' 		=> $this->pageType,
+    	'placeholder' 	=> $this->placeholder,
+    	'sort'			=> $originalSort,
+    	'title' 		=> $this->title,
+    	'resortsCount'	=> $resortsCount,
+    	'valueCount'	=> $valueCount,
+    	'moderateCount'	=> $moderateCount,
+    	'deluxeCount'	=> $deluxeCount,
+    	'deluxeVillasCount' => $deluxeVillasCount,
+    	'resortDiningCount' => $resortDiningCount
+    	));
 	}
 
-	private function getParkItems($park, $category, $area='', $sort='item_name', $seasonal=0)
+	protected function getParkItems($category='')
     {
-        $category = Category::where('name', '=', $category)->first();
+        $category = Category::findCategoryByName($this->category);
         
         $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
             ->join('status', 'items.status_id', '=', 'status.id')
@@ -253,135 +334,190 @@ class ItemsController extends Controller
             ->select('items.id', 'item_name', 'locations.location', 'item_img')
             ->where([
                 ['status.name', '=', 'Active'],
-                ['items.seasonal', '=', $seasonal]
+                ['items.seasonal', '=', $this->seasonal]
                 ]);
+
+        // To Do: Move SQL to Item Model with chained query methods
+        // $items = Item::active()->nonseasonal()->inCategory($category->name)->inPark($this->park->id);
+
+        $area = $this->area;
 
         if (!empty($area)) 
         {
-            $area = Location::where('location', '=', $area)->first();
+            $area = Location::findLocationByName($area);
 
-            if (!$area) 
-            {
+            if ($area == null) {
                 return false;
             }
 
             $items->where('locations.location', '=', $area->location);
         } else {
-            $items->where('locations.parent_loc', '=', $park->id);
+            $items->inPark($this->park->id);
         }
-            $items->where(function ($query) use ($category) {
+            $items->where(function ($query) use ($category) 
+            {
                 $query->where('categories.parent_id', '=', $category->id)
                     ->orWhere('categories.name', '=', $category->name);
-            })
-            ->orderByRaw('TRIM(LEADING "a " FROM 
-                    TRIM(LEADING "an " FROM 
-                        TRIM(LEADING "the " FROM 
-                            LOWER(`'.$sort.'`))))');
+            });
+
+        $items->sortBy($this->sort);
 
         return $items;
     }
 
-    private function getCharacterItems($status, $seasonal=0) 
-    {   
-    	// $items = Category::where('name', '=', 'character')->with('items')->first()->items;
+    protected function getCharacterItems($status, $nonseasonal=true) 
+    {
+      // To add other characters replace active() with withStatus($status)
+      return Item::active()->nonseasonal($nonseasonal)->inCategory('character')
+      	->select('id', 'item_name', 'item_img')
+      	->sortBy('item_name');
+    }
 
-		// $category = Category::where('name', '=', 'character')->first();
-  //   	$items = Item::where('category_id', '=', $category->id)
-  //   	            ->orderByRaw('TRIM(LEADING "a " FROM 
-  //                   TRIM(LEADING "an " FROM 
-  //                       TRIM(LEADING "the " FROM 
-  //                           LOWER(`item_name`))))');
-		 		// dd($items);
+    protected function getResortItems() 
+    {
+      if ($this->category == 'deluxe-villas') {
+        $this->category = 'Deluxe Villas'; 
+      }
+
+      $category = Category::findCategoryByName($this->category);
+
+      // Get all Resorts
+      if($category->name == 'Resort') {
         $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
+          ->select('items.id as id', 'item_name', 'item_img')
+          ->where('categories.parent_id', '=', $category->id);
+      } 
+      // Or get Resort by Type
+      else {
+          $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
             ->join('status', 'items.status_id', '=', 'status.id')
-            ->select('item_name', 'item_img')
+            ->select('items.id as id', 'item_name', 'item_img')
             ->where([
-                ['status.name', '=', 'Active'],
-                ['categories.name', '=', 'character'],
-                ['items.seasonal', '=', $seasonal]
-                ])
-            ->orderByRaw('TRIM(LEADING "a " FROM 
-                    TRIM(LEADING "an " FROM 
-                        TRIM(LEADING "the " FROM 
-                            LOWER(`item_name`))))');
+              ['status.name', '=', 'Active'],
+              ['categories.name', '=', $category->name],
+              ['items.seasonal', '=', $this->seasonal]
+              ])
+            ->where(function ($query) use ($category) {
+              $query->where('categories.parent_id', '=', $category->id)
+                ->orWhere('categories.name', '=', $category->name);
+              });
+      }
 
-        return $items;
+      return $items;
     }
 
-    private function getResortItems($category, $sort='item_name', $status='Active', $seasonal=0) 
+    protected function getResortDiningItems() 
     {
-         
-        if ($category == 'deluxe-villas') 
+      if ($this->sort == 'name') { 
+        $this->sort = 'items`.`item_name';
+      } elseif ($this->sort == 'location') { 
+        $this->sort = 'parentItems`.`item_name'; 
+      }
+
+      $items = Item::join('status', 'items.status_id', '=', 'status.id')
+        ->join('items as parentItems', 'items.parent_id', '=', 'parentItems.id')
+        ->select('items.id as id', 'items.item_name as item_name', 'parentItems.item_name as parent', 'items.item_img')
+        ->where([
+          ['status.name', '=', 'Active'],
+          ['items.parent_id', '>', 0],
+          ['items.seasonal', '=', 0]
+          ]);
+
+      if (!empty($this->location))
+      {
+        $resort = Item::findItemByName($this->location);
+
+        if(!$resort)
         {
-            $category = 'Deluxe Villas'; 
+          return false;
         }
 
-        $category   = Category::where('name', '=', $category)->first();
+        $items->where('parentItems.item_name', '=', $resort->item_name);
+      }
 
-        // Get all Resorts
-        if($category->name == 'Resort') {
-            $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
-                ->select('item_name', 'item_img')
-                ->where('categories.parent_id', '=', $category->id);
-        } 
-
-        // Or get Resort by Type
-        else {
-            $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
-                ->join('status', 'items.status_id', '=', 'status.id')
-                ->select('item_name', 'item_img')
-                ->where([
-                    ['status.name', '=', 'Active'],
-                    ['categories.name', '=', $category->name],
-                    ['items.seasonal', '=', $seasonal]
-                    ])
-                ->where(function ($query) use ($category) {
-                    $query->where('categories.parent_id', '=', $category->id)
-                        ->orWhere('categories.name', '=', $category->name);
-                    });
-        }
-
-        $items->orderByRaw('TRIM(LEADING "a " FROM 
-            TRIM(LEADING "an " FROM 
-                TRIM(LEADING "the " FROM 
-                    LOWER(`'.$sort.'`))))');
-
-        return $items;
+      return $items;
     }
 
-    private function getResortDiningItems($location='', $sort='items.item_name') 
+    protected function countByCategory($category)  
     {
-        if ($sort == 'item_name') { 
-            $sort = '`items`.`item_name`';
-        } elseif ($sort == 'location') { 
-            $sort = '`parentItems`.`item_name`'; 
-        }
+    	// Store original Category value
+    	$originalCategory = $this->category;
 
-        $items = Item::join('status', 'items.status_id', '=', 'status.id')
-            ->join('items as parentItems', 'items.parent_id', '=', 'parentItems.id')
-            ->select('items.item_name as item_name', 'parentItems.item_name as parent', 'items.item_img')
-            ->where([
-                ['status.name', '=', 'Active'],
-                ['items.parent_id', '>', 0],
-                ['items.seasonal', '=', 0]
-                ]);
+    	// Set new Category value and get count
+    	$this->category = $category;
 
-        if (!empty($location))
-        {
-            $location = Item::where('item_name', '=', $location)->first();
+    	// If we are counting park items
+    	if ($this->pageType == 'park') {
+	    	$count = $this->getParkItems()->count();
+	    // Otherwise we are counting resorts
+	    } else {
+	    	$count = $this->getResortItems()->count();
+	    }
+    	// Restore original Category value
+    	$this->category = $originalCategory;
 
-            if(!$location)
-            {
-                return false;
-            }
+    	return $count;
+    }
 
-            $items->where('parentItems.item_name', '=', $location->item_name);
-        } 
-            $items->orderByRaw('TRIM(LEADING "a " FROM 
-            TRIM(LEADING "an " FROM 
-                TRIM(LEADING "the " FROM 
-                    LOWER('.$sort.'))))');
+    /**
+     * Returns Items from a Collection that have been checked by the Auth User
+     *
+     * @param mixed $items
+     * @param string $id = DB field
+     */
+    protected function userChecked($items, $id='id') 
+    {
+    	return $items->whereHas('checks', function($checksQuery) {
+    		$checksQuery->whereHas('user', function($userQuery) {
+    			$userQuery->where('id', Auth::user()->id);
+    			});
+    	})->select($id)->get();
+    }
 
-        return $items;
+    /**
+     * Populates the checked attribute of items in a collection 
+     * by comparing to a second collection of checked items
+     *
+     * @param mixed $items $checkedItems
+     */
+    protected function getItemUserChecks($items, $checkedItems) 
+	    {
+	    	$itemsWithChecks = $items->get()->map(function($item) use ($checkedItems) {
+	 			if ($checkedItems->search(function($checkedItem) use ($item) {
+		  		return $checkedItem->id == $item->id;
+		  		})) {
+					$item->setCheckedAttribute(true);
+					return $item;
+				} else {
+					$item->setCheckedAttribute(false);
+					return $item;
+				}
+				});
+				return $itemsWithChecks;
+    }
+
+    /**
+     * Paginate items.
+     *
+     * @param mixed $items
+     *
+     * @return LengthAwarePaginator
+     */
+    protected function paginateItems($items, $perPage = 10)
+    {
+        $page = Request::get('page', 1);
+
+        $offset = ($page * $perPage) - $perPage;
+
+        $paginator = new LengthAwarePaginator(
+            // $items = array_slice($items, $offset, $perPage, true),
+        		$items->forPage($page, $perPage),
+            $items->count(),
+            $perPage,
+            $page
+            // ['path' => $this->request->url(), 'query' => $this->request->query()]
+        );
+
+        return $paginator;
     }
 }

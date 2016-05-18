@@ -8,10 +8,9 @@ $.magicTracker = {
 console.log(listItem);
       var token = listItem.find('input[name=_token]').val();
       var id = listItem.attr('id');
-      var unchecked = listItem.hasClass('unchecked');
-      var checkType = unchecked ? 'check' : 'uncheck';
-      listItem.addClass('pending')
-;      $.ajax({
+      var checkType = listItem.hasClass('unchecked') ? 'check' : 'uncheck';
+      listItem.addClass('pending');
+      $.ajax({
         url: '/itemactions/check',
         type: 'POST',
         data: {

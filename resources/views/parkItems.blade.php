@@ -36,11 +36,11 @@
   <nav class="row navbar navbar-default navbar-list" role="navigation">
     <ul class="nav navbar-nav navbar-left">
       <li @if ($category == 'attractions') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/attractions">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)<span class="sr-only">(current)</span></a></li>
+        <a href="/{{$address}}/attractions/{{$area}}">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
       <li @if ($category == 'entertainment') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/entertainment">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
+        <a href="/{{$address}}/entertainment/{{$area}}">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
       <li @if ($category == 'dining') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/dining">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
+        <a href="/{{$address}}/dining/{{$area}}">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right hidden-xs">
       <li class="sort-label">View</li>
@@ -71,57 +71,7 @@
 @stop
 
 @section('content')
-  <!-- Output items to list -->
-  <ol id="item-list" class="master-item-list">
-    <!-- /MASTER LIST ITEM -->
-    @foreach($items as $item)
-      <li class="list-item unchecked" id="{{ $item->id }}">
-      {{ csrf_field() }}
-        <div class="item-image">
-          <a href="/items/{{ $item->item_name }}">
-            <img class="img-responsive"
-              @if($item->item_img)
-                src="{{ URL::asset('img/'.$item->item_img.'-small.jpg') }}" 
-              @else 
-                src="{{ URL::asset('img/'.$placeholder.'-small.jpg') }}"
-              @endif
-                 alt="{{ $item->item_name }}">
-        </div> <!-- /item image -->
-        <div class="item-body">
-          <div class="row">
-            <div class="col-sm-8">
-              <h4 class="item-name"><a href="/items/{{ $item->item_name }}">{{ $item->item_name }}</a></h4>
-                <a href="/{{ $address.'/'.$category.'/'.strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
-            </div> <!-- /col-xs-8 -->
-            <div class="col-sm-4 actions-col">
-              <div class="row actions">
-                <div class="col col-xs-3 btn-col-counter">
-                  <button type="button" class="btn btn-counter" aria-label="Left Align" title="Add a check">
-                    <span class="check-count">1</span>
-                  </button>
-                </div> <!-- /col-xs-3 -->
-                <div class="col col-xs-3 btn-col-to-do">
-                  <button type="button" class="btn btn-link btn-to-do" aria-label="Left Align" title="Add {{ $item->item_name }} to your To Do List">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  </button>
-                </div> <!-- /col-xs-3 -->
-                <div class="col col-xs-3 btn-col-unchecked">
-                  <button type="button" class="btn btn-outline btn-check-unchecked" aria-label="Left Align" title="Check {{ $item->item_name }}">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                  </button>
-                </div> <!-- /col-xs-3 -->
-                <div class="col col-xs-3 btn-col-checked">
-                  <button type="button" class="btn btn-check-checked" aria-label="Left Align" title="Uncheck {{ $item->item_name }}">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                  </button>
-                </div> <!-- /col-xs-3 -->
-              </div> <!-- /actions -->
-            </div> <!-- /col-xs-4 -->
-          </div> <!-- /row -->
-        </div> <!-- /item-body -->
-      </li> <!-- /list-item -->
-      @endforeach
-  </ol> <!--- master-item-list -->
+  @include ('includes.itemList')
   @yield('content')
 @stop
 

@@ -29,11 +29,11 @@ class Category extends Model
     }
 
     /**
-     * Get Category model by name
+     * Get Category by name
      * @param string $name
      * @return Builder
      */
-    public function findCategoryByName($name)
+    public static function findCategoryByName($name)
     {
     	return Category::where('name', '=', $name)->first();
     }

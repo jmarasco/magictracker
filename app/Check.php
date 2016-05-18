@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Check extends Model
 {
     /**
-     * Get the user for the check through check_user.
+     * Get the user for the check.
      */
     public function user() 
     {
@@ -15,7 +15,7 @@ class Check extends Model
     }
 
     /**
-     * Get the item for the check through check_item.
+     * Get the item for the check.
      */
     public function item() 
     {
