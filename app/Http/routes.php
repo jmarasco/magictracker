@@ -56,10 +56,10 @@ Route::get('/home', 'HomeController@index');
 Route::post('/itemactions/check', [
     'as' => 'check', 
     'middleware' => 'auth',
-    'uses' => 'ChecksController@check'
+    'uses' => 'ChecksController@checkUncheck'
 ]);
 
-//TEMP
-Route::get('/itemactions/check', function(){
+// TEMP
+Route::get('/itemactions/check', function() {
     return view('items.checkItem', ['pageType' => '']);
 });

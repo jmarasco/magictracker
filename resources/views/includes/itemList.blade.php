@@ -23,9 +23,9 @@
             <div class="col-sm-8">
               <h4 class="item-name"><a href="/items/{{ $item->item_name }}">{{ $item->item_name }}</a></h4>
                 @if ($item->location)
-                <a href="/{{ $address.'/'.strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
+                <a href="{{ strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
                 @elseif ($item->parent)
-                  <a href="/{{ $address.'/'.$category.'/'.strtolower($item->parent) }}" class="item-location">{{ $item->parent }}</a>
+                  <a href="/items/{{ strtolower($item->parent) }}" class="item-location">{{ $item->parent }}</a>
                 @endif
             </div> <!-- /col-xs-8 -->
             <div class="col-sm-4 actions-col">

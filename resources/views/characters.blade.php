@@ -45,7 +45,7 @@
       <div class="progress-wrap progress" data-progress-percent="46">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>{{ $title }}</strong> <small>(<span class="total-checks">17</span> of <span id="mk-total" class="total-all"><?php echo $activeCount; ?></span>)</small></p>
+      <p>of <strong>{{ $title }}</strong> <small>(<span class="total-checks">{{ $checkedCount }}</span> of <span id="mk-total" class="total-all">{{ $activeCount }}</span>)</small></p>
     </div> <!-- /.progress-total-->
   </div> <!-- /.widget-column-->
 @stop

@@ -35,21 +35,23 @@
 @section('list-nav')
   <nav class="row navbar navbar-default navbar-list" role="navigation">
     <ul class="nav navbar-nav navbar-left">
+      <li @if (empty($category)) class="active"><span class="sr-only">(current)</span @endif >
+        <a href="/{{ $address }}">All (<span class="total-count">{{ $total }}</span>)</a></li>
       <li @if ($category == 'attractions') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/attractions/{{$area}}">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
+        <a href="/{{ $address }}/attractions">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
       <li @if ($category == 'entertainment') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/entertainment/{{$area}}">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
+        <a href="/{{ $address }}/entertainment/{{$area}}">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
       <li @if ($category == 'dining') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{$address}}/dining/{{$area}}">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
+        <a href="/{{ $address }}/dining/{{$area}}">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right hidden-xs">
       <li class="sort-label">View</li>
       <li class="dropdown list-filter">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="filter-name">ALL </span><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li id="listFilterAll"><a href="#">All</a></li>
-            <li id="listFilterChecked"><a href="#">Checked</a></li>
-            <li id="listFilterUnchecked"><a href="#">Unchecked</a></li>
+            <li id="listFilterAll"><a href="{{ URL::current() }}">All</a></li>
+            <li id="listFilterChecked"><a href="{{ URL::current() }}?checked=checked">Checked</a></li>
+            <li id="listFilterUnchecked"><a href="{{ URL::current() }}?checked=unchecked">Unchecked</a></li>
           </ul>
       </li>
       <li class="sort-label">Sort By</li>

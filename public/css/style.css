@@ -408,8 +408,13 @@ body {
 
 .pagination { margin-top: 30px; }
 
-.pagination>li>a, .pagination>.disabled>a { background-color: transparent; }
+.pagination>li>a, .pagination>.disabled>a, .pagination>.disabled>span, .pagination>.disabled>span:hover { 
+	background-color: transparent; 
+}
 
+.pagination>.disabled>span:hover {
+	cursor: default;
+}
 @media (max-width: 767px) {
 	.item-name {
 		margin-bottom: 2px;

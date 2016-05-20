@@ -24,6 +24,7 @@ $.magicTracker = {
           $.magicTracker.animateProgressBars();
         },
         error: function(data) {
+          console.log(data);
           listItem.removeClass('pending');
         }
       });

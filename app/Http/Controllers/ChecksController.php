@@ -10,18 +10,12 @@ use Illuminate\Http\Request;
 
 class ChecksController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function checkUncheck(Request $request) 
     {
-        $this->middleware('auth');
-    }
+      if (!Auth::user()) {
+        return redirect()->route('login');
+      }
 
-    public function check(Request $request) 
-    {
       // Get Input parameters
     	$userId = Auth::user()->id;
       $itemId = $request->get('itemId');
@@ -39,26 +33,34 @@ class ChecksController extends Controller
       // If the action is check
       if ($checkType == 'check') 
       {
-        // Create new check for User and Item
+        $this->check($userId, $itemId);
+
+      // If the action is uncheck
+      } elseif ($checkType == 'uncheck') {
+        
+        $this->uncheck($item, $userId);
+
+      // Otherwise the action is invalid
+      } else {
+        return null;
+      }      
+    }
+
+    public function check($userId, $itemId) {
+      // Create new check for User and Item
         $check = new Check;
         $check->user()->associate($userId);
         $check->item()->associate($itemId);
 
           // Save new check
         $check->save();
+    }
 
-      // If the action is uncheck
-      } elseif ($checkType == 'uncheck') {
-        // Retrieve any checks associated with Item and User
-        $check = $item->checks()->where('user_id', '=', $userId);
+    public function uncheck($item, $userId) {
+      // Retrieve any checks associated with Item and User
+      $check = $item->checks()->where('user_id', $userId);
 
-        // Delete all selected checks
-        $check->delete();
-
-      // Otherwise the action is invalid
-      } else {
-        return null;
-      }      
-      return $request->all();
+      // Delete all selected checks
+      $check->delete();
     }
 }

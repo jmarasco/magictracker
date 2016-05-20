@@ -162,12 +162,11 @@ class ItemsController extends Controller
 		));
 	}
 
-	public function pageNotFound() 
-	{
-		return redirect()->route('404');
-	}
+	/**
+   * PAGE FUNCTIONS
+   */
 
-	protected function getParkPage()
+  protected function getParkPage()
 	{	
 		// Get Location from DB
 		$this->park = Location::findLocationByName($this->title);
@@ -189,8 +188,13 @@ class ItemsController extends Controller
      	return redirect($this->address.'/attractions');
     }		
 
-		// Fetch items collection
-   	$items = $this->getParkItems();
+    // Check area parameter and fetch items accordingly
+    $area = $this->area;
+    if ($area) {
+      $items = $this->getParkAreaItems();
+    } else {
+     	$items = $this->getParkItems();
+    }
 
 		// Retrieve checked Items for page
  		$checkedItems = $this->userChecked($this->getParkItems(), 'items.id')->keyBy('id');
@@ -206,6 +210,7 @@ class ItemsController extends Controller
    	$entertainmentCount = $this->countByCategory('entertainment');
    	$diningCount 		= $this->countByCategory('dining');
    	$totalCount 		= $attractionCount + $entertainmentCount + $diningCount;
+    $totalCheckedCount   = $checkedItems->count();
 
     return view('parkItems', array(
     	'items'			=> $paginatedItems,
@@ -231,12 +236,13 @@ class ItemsController extends Controller
 		// Fetch items Collection
    	$items = $this->getCharacterItems($status);
 
-   	// Set Count variables
-   	$activeCount 	= $items->count();
- 		
- 		// Retrieve checked Items for page
+   	// Retrieve checked Items for page
  		$checkedItems = $this->userChecked($this->getCharacterItems($status))->keyBy('id');
 
+    // Set Count variables
+    $activeCount  = $items->count();
+    $checkedCount = $checkedItems->count();
+    
  		// Populate checked attribute of Items
  		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
 
@@ -250,6 +256,7 @@ class ItemsController extends Controller
     	'placeholder' 	=> $this->placeholder,
     	'title' 		=> $this->title,
     	'activeCount'	=> $activeCount,
+      'checkedCount' => $checkedCount
     	));
 	}
 
@@ -324,45 +331,53 @@ class ItemsController extends Controller
     	));
 	}
 
-	protected function getParkItems($category='')
+	protected function getParkItems($area='')
     {
-        $category = Category::findCategoryByName($this->category);
-        
-        $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
-            ->join('status', 'items.status_id', '=', 'status.id')
-            ->join('locations', 'items.location_id', '=', 'locations.id')
-            ->select('items.id', 'item_name', 'locations.location', 'item_img')
-            ->where([
-                ['status.name', '=', 'Active'],
-                ['items.seasonal', '=', $this->seasonal]
-                ]);
+      $category = Category::findCategoryByName($this->category);
+      
+      $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
+        ->join('status', 'items.status_id', '=', 'status.id')
+        ->join('locations', 'items.location_id', '=', 'locations.id')
+        ->select('items.id', 'item_name', 'locations.location', 'item_img')
+        ->where([
+          ['status.name', '=', 'Active'],
+          ['items.seasonal', '=', $this->seasonal]
+          ]);
 
-        // To Do: Move SQL to Item Model with chained query methods
-        // $items = Item::active()->nonseasonal()->inCategory($category->name)->inPark($this->park->id);
+      // To Do: Move SQL to Item Model with chained query methods
+      // $items = Item::active()->nonseasonal()->inCategory($category->name)->inPark($this->park->id);
 
-        $area = $this->area;
+      $items->inPark($this->park->id);
+    
+      $items->where(function ($query) use ($category) 
+      {
+        $query->where('categories.parent_id', '=', $category->id)
+          ->orWhere('categories.name', '=', $category->name);
+      });
 
-        if (!empty($area)) 
-        {
-            $area = Location::findLocationByName($area);
+      $items->sortBy($this->sort);
 
-            if ($area == null) {
-                return false;
-            }
+      return $items;
+    }
 
-            $items->where('locations.location', '=', $area->location);
-        } else {
-            $items->inPark($this->park->id);
+    protected function getParkAreaItems() 
+    {
+      //Get area parameter and verify it against the DB
+      $area = $this->area;
+
+      if (!empty($area)) 
+      {
+        $area = Location::findLocationByName($area);
+
+        if ($area == null) {
+          return false;
         }
-            $items->where(function ($query) use ($category) 
-            {
-                $query->where('categories.parent_id', '=', $category->id)
-                    ->orWhere('categories.name', '=', $category->name);
-            });
+      }
 
-        $items->sortBy($this->sort);
+      // Get all Park Items & filter by area
+      $items = $this->getParkItems()->where('locations.location', '=', $area->location);
 
-        return $items;
+      return $items;
     }
 
     protected function getCharacterItems($status, $nonseasonal=true) 
@@ -435,7 +450,7 @@ class ItemsController extends Controller
         $items->where('parentItems.item_name', '=', $resort->item_name);
       }
 
-      return $items;
+      return $items->sortBy($this->sort);
     }
 
     protected function countByCategory($category)  
@@ -467,9 +482,14 @@ class ItemsController extends Controller
      */
     protected function userChecked($items, $id='id') 
     {
-    	return $items->whereHas('checks', function($checksQuery) {
-    		$checksQuery->whereHas('user', function($userQuery) {
-    			$userQuery->where('id', Auth::user()->id);
+      $userId = '';
+      if (Auth::user()) {
+        $userId = Auth::user()->id;
+      }
+
+    	return $items->whereHas('checks', function($checksQuery) use ($userId) {
+    		$checksQuery->whereHas('user', function($userQuery) use ($userId) {
+    			$userQuery->where('id', $userId);
     			});
     	})->select($id)->get();
     }
@@ -480,44 +500,49 @@ class ItemsController extends Controller
      *
      * @param mixed $items $checkedItems
      */
-    protected function getItemUserChecks($items, $checkedItems) 
-	    {
-	    	$itemsWithChecks = $items->get()->map(function($item) use ($checkedItems) {
-	 			if ($checkedItems->search(function($checkedItem) use ($item) {
-		  		return $checkedItem->id == $item->id;
-		  		})) {
-					$item->setCheckedAttribute(true);
-					return $item;
-				} else {
-					$item->setCheckedAttribute(false);
-					return $item;
-				}
-				});
-				return $itemsWithChecks;
-    }
-
-    /**
-     * Paginate items.
-     *
-     * @param mixed $items
-     *
-     * @return LengthAwarePaginator
-     */
-    protected function paginateItems($items, $perPage = 10)
+  protected function getItemUserChecks($items, $checkedItems) 
     {
-        $page = Request::get('page', 1);
+    	$itemsWithChecks = $items->get()->map(function($item) use ($checkedItems) {
+ 			if ($checkedItems->search(function($checkedItem) use ($item) {
+	  		return $checkedItem->id == $item->id;
+	  		})) {
+				$item->setCheckedAttribute(true);
+				return $item;
+			} else {
+				$item->setCheckedAttribute(false);
+				return $item;
+			}
+			});
+			return $itemsWithChecks;
+  }
 
-        $offset = ($page * $perPage) - $perPage;
+  /**
+   * Paginate items.
+   *
+   * @param mixed $items
+   *
+   * @return LengthAwarePaginator
+   */
+  protected function paginateItems($items, $perPage = 10)
+  {
+    $page = Request::get('page', 1);
 
-        $paginator = new LengthAwarePaginator(
-            // $items = array_slice($items, $offset, $perPage, true),
-        		$items->forPage($page, $perPage),
-            $items->count(),
-            $perPage,
-            $page
-            // ['path' => $this->request->url(), 'query' => $this->request->query()]
-        );
+    $offset = ($page * $perPage) - $perPage;
 
-        return $paginator;
-    }
+    $paginator = new LengthAwarePaginator(
+      // $items = array_slice($items, $offset, $perPage, true),
+  		$items->forPage($page, $perPage),
+      $items->count(),
+      $perPage,
+      $page,
+      ['path' => Request::url(), 'query' => Request::query()]
+    );
+
+    return $paginator;
+  }
+
+  public function pageNotFound() 
+  {
+    return redirect()->route('404');
+  }
 }
