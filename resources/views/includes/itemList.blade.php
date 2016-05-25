@@ -23,7 +23,7 @@
             <div class="col-sm-8">
               <h4 class="item-name"><a href="/items/{{ $item->item_name }}">{{ $item->item_name }}</a></h4>
                 @if ($item->location)
-                <a href="{{ strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
+                <a href="{{ URL::current() . '/' . strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
                 @elseif ($item->parent)
                   <a href="/items/{{ strtolower($item->parent) }}" class="item-location">{{ $item->parent }}</a>
                 @endif

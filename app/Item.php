@@ -130,7 +130,7 @@ class Item extends Model
     /**
      * Get Item by name
      * @param string $name
-     * @return IlluminateDatabaseEloquentBuilder
+     * @return Illuminate/Database/Eloquent/Builder
      */
     public static function findItemByName($name)
     {

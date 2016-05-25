@@ -21,19 +21,19 @@ Route::get('404', [
     'as' => '404', 'uses' => 'ItemsController@magickingdom'
 ]);
 
-Route::get('magic-kingdom/{category?}/{area?}', [
+Route::get('magic-kingdom/{area?}', [
     'as' => 'mk', 'uses' => 'ItemsController@magickingdom'
 ]);
 
-Route::get('epcot/{category?}/{area?}', [
+Route::get('epcot/{area?}', [
     'as' => 'epcot', 'uses' => 'ItemsController@epcot'
 ]);
 
-Route::get('hollywood-studios/{category?}/{area?}', [
+Route::get('hollywood-studios/{area?}', [
     'as' => 'hs', 'uses' => 'ItemsController@hollywoodstudios'
 ]);
 
-Route::get('animal-kingdom/{category?}/{area?}', [
+Route::get('animal-kingdom/{area?}', [
     'as' => 'ak', 'uses' => 'ItemsController@animalkingdom'
 ]);
 
@@ -41,7 +41,7 @@ Route::get('characters', [
     'as' => 'characters', 'uses' => 'ItemsController@characters'
 ]);
 
-Route::get('resorts/{category?}/{area?}', [
+Route::get('resorts/{category?}', [
     'as' => 'resorts', 'uses' => 'ItemsController@resorts'
 ]);
 

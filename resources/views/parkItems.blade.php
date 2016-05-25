@@ -36,13 +36,13 @@
   <nav class="row navbar navbar-default navbar-list" role="navigation">
     <ul class="nav navbar-nav navbar-left">
       <li @if (empty($category)) class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{ $address }}">All (<span class="total-count">{{ $total }}</span>)</a></li>
+        <a href="{{ URL::current() }}">All (<span class="total-count">{{ $total }}</span>)</a></li>
       <li @if ($category == 'attractions') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{ $address }}/attractions">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
+        <a href="{{ URL::current() }}?category=attractions">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
       <li @if ($category == 'entertainment') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{ $address }}/entertainment/{{$area}}">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
+        <a href="{{ URL::current() }}?category=entertainment">Entertainment (<span class="entertainment-count">{{ $entertainmentCount }}</span>)</a></li>
       <li @if ($category == 'dining') class="active"><span class="sr-only">(current)</span @endif >
-        <a href="/{{ $address }}/dining/{{$area}}">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
+        <a href="{{ URL::current() }}?category=dining">Dining (<span class="dining-count">{{ $diningCount }}</span>)</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right hidden-xs">
       <li class="sort-label">View</li>
@@ -54,20 +54,22 @@
             <li id="listFilterUnchecked"><a href="{{ URL::current() }}?checked=unchecked">Unchecked</a></li>
           </ul>
       </li>
-      <li class="sort-label">Sort By</li>
-      <li class="dropdown list-sort">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            @if ($sort=='location')
-            Location
-            @else
-            Name
-            @endif
-            <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li id="listSortName"><a href="?sort=name">Name</a></li>
-            <li id="listSortLocation"><a href="?sort=location">Location</a></li>
-          </ul>
-      </li>
+      @if(!$area)
+        <li class="sort-label">Sort By</li>
+        <li class="dropdown list-sort">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              @if ($sort=='location')
+              Location
+              @else
+              Name
+              @endif
+              <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li id="listSortName"><a href="?sort=name">Name</a></li>
+              <li id="listSortLocation"><a href="?sort=location">Location</a></li>
+            </ul>
+        </li>
+    @endif
     </ul>
   </nav> <!-- /List nav bar -->
 @stop
@@ -88,25 +90,27 @@
     <div class="widget-header">
       <span>You've Done</span>
     </div> <!-- /.widget-header-->
-    <div id="mk-progress-total" class="progress-animate progress-total">
+    <div class="progress-animate progress-total">
       <div class="progress-wrap progress" data-progress-percent="46">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>{{ $title }}</strong> <small>(<span class="total-checks">17</span> of <span class="total-all">{{ $total }}</span>)</small></p>
+      <p>of <strong>
+      @if(!empty($area)) {{ ucwords($area) }} @else {{ $title }} @endif
+      </strong> <small>(<span class="total-checks">17</span> of <span class="total-all">{{ $total }}</span>)</small></p>
     </div> <!-- /.progress-total-->
-    <div id="mk-progress-attractions" class="progress-animate">
+    <div class="progress-animate">
       <div class="progress-wrap progress" data-progress-percent="75">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
       <p>of <strong>Attractions</strong> <small>(<span class="total-checks">10</span> of <span class="total-all">{{ $attractionCount }}</span>)</small></p>
     </div> <!-- /.progress-attractions-->
-    <div id="mk-progress-entertainment" class="progress-animate">
+    <div class="progress-animate">
       <div class="progress-wrap progress" data-progress-percent="75">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
       <p>of <strong>Entertainment</strong> <small>(<span class="total-checks">6</span> of <span class="total-all">{{ $entertainmentCount }}</span>)</small></p>
     </div> <!-- /.progress-entertainment-->
-    <div id="mk-progress-dining" class="progress-animate">
+    <div class="progress-animate">
       <div class="progress-wrap progress" data-progress-percent="30">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->

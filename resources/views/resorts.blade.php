@@ -12,13 +12,13 @@
         <a href="/resorts">All Resorts (<span class="character-count">{{ $resortsCount }}</span>)</a></li>
       @unless($category == 'dining')
         <li @if ($category == 'value') class="active"><span class="sr-only">(current)</span @endif >
-          <a href="/{{ $address }}/value">Value (<span>{{ $valueCount }}</span>)</a></li>
+          <a href="/resorts/value">Value (<span>{{ $valueCount }}</span>)</a></li>
         <li @if ($category == 'moderate') class="active"><span class="sr-only">(current)</span @endif >
-          <a href="/{{ $address }}/moderate">Moderate (<span>{{ $moderateCount }}</span>)</a></li>
+          <a href="/resorts/moderate">Moderate (<span>{{ $moderateCount }}</span>)</a></li>
         <li @if ($category == 'deluxe') class="active"><span class="sr-only">(current)</span @endif >
-          <a href="/{{ $address }}/deluxe">Deluxe (<span>{{ $deluxeCount }}</span>)</a></li>
+          <a href="/resorts/deluxe">Deluxe (<span>{{ $deluxeCount }}</span>)</a></li>
         <li @if ($category == 'deluxe-villas') class="active"><span class="sr-only">(current)</span @endif >
-          <a href="/{{ $address }}/deluxe-villas">Deluxe Villas (<span>{{ $deluxeVillasCount }}</span>)</a></li>
+          <a href="/resorts/deluxe-villas">Deluxe Villas (<span>{{ $deluxeVillasCount }}</span>)</a></li>
       @endunless
 
       <li @if ($category == 'dining') class="active"><span class="sr-only">(current)</span @endif >
