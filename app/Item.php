@@ -83,11 +83,6 @@ class Item extends Model
         return $this->hasMany(Check::class);
     }
 
-    public function isChecked() 
-    {
-        return $this->checked;
-    }
-
     /**
      * SETTERS AND GETTERS
      */

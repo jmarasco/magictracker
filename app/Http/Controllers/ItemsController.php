@@ -194,24 +194,25 @@ class ItemsController extends Controller
 		// Change sort variable to table field name
 		if ($this->sort == 'name') { $this->sort = 'item_name'; }
 
-    $count = $this->countEachParkCategory();
+
+    // Retrieve checked Items for page
+    $checkedItems = $this->userChecked($this->getParkItems(), 'items.id')->get()->keyBy('id');
 
     // Check area parameter and fetch items and counts accordingly
     $area = $this->area;
     if ($area) {
       $items = $this->getParkAreaItems();
-      $areaCount = $this->countEachParkCategory($area);
-      $attractionCount = $areaCount['attractions'];
-      $entertainmentCount = $areaCount['entertainment'];
-      $diningCount = $areaCount['dining'];
-      $totalAreaCount = $areaCount['attractions'] + $areaCount['entertainment'] + $areaCount['dining'];
+      $totalCheckedCount = $this->userChecked($this->getParkAreaItems(), 'items.id')->count();
+      $count = $this->countEachParkCategory($area);
+      $checkedCount = $this->countEachCheckedParkCategory($area);
     } else {
      	$items = $this->getParkItems();
-      $attractionCount = $count['attractions'];
-      $entertainmentCount = $count['entertainment'];
-      $diningCount = $count['dining'];
-      $totalAreaCount = $count['attractions'] + $count['entertainment'] + $count['dining'];
+      $totalCheckedCount = $checkedItems->count();
+      $count = $this->countEachParkCategory();
+      $checkedCount = $this->countEachCheckedParkCategory();
     }
+
+    $totalCount = $count['attractions'] + $count['entertainment'] + $count['dining'];
 
     // Check category parameter and filter if present
     $category = $this->category = Request::get('category');
@@ -219,17 +220,11 @@ class ItemsController extends Controller
         $items = $this->getCategoryItems($category, $items);
       }
 
-		// Retrieve checked Items for page and count
- 		$checkedItems = $this->userChecked($this->getParkItems(), 'items.id')->keyBy('id');
-
  		// Populate checked attribute of Items
  		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
 
  		// Paginate
  		$paginatedItems = $this->paginateItems($itemsWithChecks);
-
-   	// Set total count variable
-    $totalCheckedCount  = $checkedItems->count();
 
     return view('parkItems', array(
     	'items'			=> $paginatedItems,
@@ -240,11 +235,14 @@ class ItemsController extends Controller
     	'placeholder'	=> $this->placeholder,
     	'sort'			=> $this->sort,
     	'title' 		=> $this->title,
-      'total' => $totalAreaCount,
-    	'attractionCount' => $attractionCount,
-    	'entertainmentCount' => $entertainmentCount,
-    	'diningCount'	=> $diningCount,
-    	'area'	=> $this->area
+      'totalCount'     => $totalCount,
+    	'attractionCount' => $count['attractions'],
+    	'entertainmentCount' => $count['entertainment'],
+    	'diningCount'	=> $count['dining'],
+      'totalCheckedCount' => $totalCheckedCount,
+      'attractionCheckedCount' => $checkedCount['attractions'],
+      'entertainmentCheckedCount' => $checkedCount['entertainment'],
+      'diningCheckedCount' => $checkedCount['dining']
     	));
 	}
 
@@ -257,7 +255,7 @@ class ItemsController extends Controller
    	$items = $this->getCharacterItems($status);
 
    	// Retrieve checked Items for page
- 		$checkedItems = $this->userChecked($this->getCharacterItems($status))->keyBy('id');
+ 		$checkedItems = $this->userChecked($this->getCharacterItems($status))->get()->keyBy('id');
 
     // Set Count variables
     $activeCount  = $items->count();
@@ -294,15 +292,21 @@ class ItemsController extends Controller
 	     	return $this->pageNotFound();
 	    }
 
-		// Set sort parameter to unambiguous 'name'
+    // Retrieve checked Items for page
+    $checkedItems = $this->userChecked($this->getResortItems(), 'items.id')->get()->keyBy('id');
+
 		if ($category == 'dining') {
+      // Set sort parameter to unambiguous 'name' for resort dining query
 			if ($this->sort == 'item_name') {
 				$this->sort = 'name';
 			}
-		// Fetch items collection, sort & paginate	
+		  // Fetch resort dining items, checks and count
 			$items = $this->getResortDiningItems();
+      $checkedItems = $this->userChecked($this->getResortDiningItems(), 'items.id')->get()->keyBy('id');
+      $totalCheckedCount = $this->userChecked($this->getResortDiningItems(), 'items.id')->count();
 		} elseif ($category == 'resort') {
      	$items = $this->getResortItems();
+      $totalCheckedCount = $checkedItems->count();
    	} else {
       $items = $this->getResortCategoryItems($category);
     }
@@ -310,9 +314,6 @@ class ItemsController extends Controller
    	if (!$items) {
    		return redirect()->route('resorts');
    	}
-
-    // Retrieve checked Items for page
- 		$checkedItems = $this->userChecked($this->getResortItems(), 'items.id')->keyBy('id');
 
  		// Populate checked attribute of Items
  		$itemsWithChecks = $this->getItemUserChecks($items, $checkedItems);
@@ -322,6 +323,7 @@ class ItemsController extends Controller
  	
    	// Set Count variables
     $count = $this->countEachResortCategory();
+    $checkedCount = $this->countEachCheckedResortCategory();
 
     return view('resorts', array(
     	'items'			=> $paginatedItems,
@@ -331,39 +333,44 @@ class ItemsController extends Controller
     	'placeholder' 	=> $this->placeholder,
     	'sort'			=> $originalSort,
     	'title' 		=> $this->title,
-    	'resortsCount'	=> $count['resort'],
-    	'valueCount'	=> $count['value'],
-    	'moderateCount'	=> $count['moderate'],
-    	'deluxeCount'	=> $count['deluxe'],
-    	'deluxeVillasCount' => $count['deluxe-villas'],
-    	'resortDiningCount' => $count['dining']
+    	'resortsCount' => $count['resort'],
+      'valueCount'  => $count['value'],
+      'moderateCount' => $count['moderate'],
+      'deluxeCount' => $count['deluxe'],
+      'deluxeVillasCount' => $count['deluxe-villas'],
+      'resortDiningCount' => $count['dining'],
+      'resortsCheckedCount'  => $checkedCount['resort'],
+      'valueCheckedCount'  => $checkedCount['value'],
+      'moderateCheckedCount' => $checkedCount['moderate'],
+      'deluxeCheckedCount' => $checkedCount['deluxe'],
+      'deluxeVillasCheckedCount' => $checkedCount['deluxe-villas'],
+      'resortDiningCheckedCount' => $checkedCount['dining']
     	));
 	}
 
 	protected function getParkItems($area='')
     {
-      $items = Item::join('categories', 'items.category_id', '=', 'categories.id')
+      return Item::join('categories', 'items.category_id', '=', 'categories.id')
         ->join('status', 'items.status_id', '=', 'status.id')
         ->join('locations', 'items.location_id', '=', 'locations.id')
         ->select('items.id', 'item_name', 'locations.location', 'item_img')
         ->where([
           ['status.name', '=', 'Active'],
           ['items.seasonal', '=', $this->seasonal]
-          ]);
+          ])
+        ->inPark($this->park->id)
+        ->sortBy($this->sort);
 
       // To Do: Move SQL to Item Model with chained query methods
-      // $items = Item::active()->nonseasonal()->inCategory($category->name)->inPark($this->park->id);
-
-      $items->inPark($this->park->id)
-            ->sortBy($this->sort);
-
-      return $items;
+      // $items = Item::active()->nonseasonal()->inPark($this->park->id)->sortBy($this->sort);
     }
 
-    protected function getParkAreaItems() 
+    protected function getParkAreaItems($area='') 
     {
       //Get area parameter and verify it against the DB
-      $area = $this->area;
+      if (empty($area)) {
+        $area = $this->area;
+      }
 
       if (!empty($area)) 
       {
@@ -519,6 +526,23 @@ class ItemsController extends Controller
       return $count;
     }
 
+    protected function countEachCheckedParkCategory($area='') 
+    {
+      $count = array();
+
+      foreach ($this->parkCategories as $category) {
+        if($area){
+          $items = $this->getParkAreaItems();
+        } else {
+          $items = $this->getParkItems();
+        }
+        $checkedItems = $this->userChecked($items, 'items.id');
+        $count[$category] = $this->countByCategory($category, $checkedItems);
+      }
+
+      return $count;
+    }
+
     /**
      * Counts Resort items by category
      * @param mixed $items
@@ -543,9 +567,35 @@ class ItemsController extends Controller
     }
 
     /**
-     * Returns Items from a Collection that have been checked by the Auth User
-     *
+     * Counts Resort items by category
      * @param mixed $items
+     * @return array
+     */
+    protected function countEachCheckedResortCategory()  
+    {
+      $count = array();
+
+      foreach ($this->resortCategories as $category) {
+        if($category == 'dining') {
+          $items = $this->getResortDiningItems();
+          $count[$category] = $this->userChecked($items, 'items.id')->count();
+        } elseif ($category == 'resort') {
+          $items = $this->getResortItems();
+          $count[$category] = $this->userChecked($items, 'items.id')->count();
+        } else {
+          $items = $this->getResortCategoryItems($category);
+          $checkedItems = $this->userChecked($items, 'items.id');
+          $count[$category] = $this->countByCategory($category, $checkedItems);
+        }
+      }
+
+      return $count;
+    }
+
+    /**
+     * Modifies a Builder query to return items that have been checked by the Auth User
+     *
+     * @param Illuminate/Database/Eloquent/Builder $items
      * @param string $id = DB field
      * @return Illuminate/Database/Eloquent/Builder
      */
@@ -560,7 +610,7 @@ class ItemsController extends Controller
     		$checksQuery->whereHas('user', function($userQuery) use ($userId) {
     			$userQuery->where('id', $userId);
     			});
-    	})->select($id)->get();
+    	})->select($id);
     }
 
     /**

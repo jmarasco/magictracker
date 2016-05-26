@@ -71,40 +71,40 @@
       <span>You've Done</span>
     </div> <!-- /.widget-header-->
     <div id="mk-progress-total" class="progress-animate progress-total">
-      <div class="progress-wrap progress" data-progress-percent="46">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>All Resorts</strong> <small>(<span id="mk-total-checks" class="total-checks">6</span> of <span id="mk-total" class="total-all">{{ $resortsCount }}</span>)</small></p>
+      <p>of <strong>All Resorts</strong> <small>(<span id="mk-total-checks" class="total-checks">{{ $resortsCheckedCount }}</span> of <span id="mk-total" class="total-all">{{ $resortsCount }}</span>)</small></p>
     </div> <!-- /.progress-total-->
     <div id="mk-progress-attractions" class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="75">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Value Resorts</strong> <small>(<span id="mk-attraction-checks" class="total-checks">2</span> of <span id="mk-attraction-total"class="total-all">{{ $valueCount }}</span>)</small></p>
+      <p>of <strong>Value Resorts</strong> <small>(<span id="mk-attraction-checks" class="total-checks">{{ $valueCheckedCount }}</span> of <span id="mk-attraction-total"class="total-all">{{ $valueCount }}</span>)</small></p>
     </div> <!-- /.progress-attractions-->
     <div id="mk-progress-entertainment" class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="75">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Moderate Resorts</strong> <small>(<span id="mk-entertainment-checks" class="total-checks">4</span> of <span id="mk-entertainment-total"class="total-all">{{ $moderateCount }}</span>)</small></p>
+      <p>of <strong>Moderate Resorts</strong> <small>(<span id="mk-entertainment-checks" class="total-checks">{{ $moderateCheckedCount }}</span> of <span id="mk-entertainment-total"class="total-all">{{ $moderateCount }}</span>)</small></p>
     </div> <!-- /.progress-entertainment-->
     <div id="mk-progress-dining" class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="30">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Deluxe Resorts</strong> <small>(<span id="mk-dining-checks" class="total-checks">0</span> of <span id="mk-dining-total" class="total-all">{{ $deluxeCount }}</span>)</small></p>
+      <p>of <strong>Deluxe Resorts</strong> <small>(<span id="mk-dining-checks" class="total-checks">{{ $deluxeCheckedCount }}</span> of <span id="mk-dining-total" class="total-all">{{ $deluxeCount }}</span>)</small></p>
     </div> <!-- /.progress-dining-->
     <div id="mk-progress-dining" class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="30">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Deluxe Villas</strong> <small>(<span id="mk-dining-checks" class="total-checks">0</span> of <span id="mk-dining-total" class="total-all">{{ $deluxeVillasCount }}</span>)</small></p>
+      <p>of <strong>Deluxe Villas</strong> <small>(<span id="mk-dining-checks" class="total-checks">{{ $deluxeVillasCheckedCount }}</span> of <span id="mk-dining-total" class="total-all">{{ $deluxeVillasCount }}</span>)</small></p>
     </div> <!-- /.progress-dining-->
     <div id="mk-progress-dining" class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="30">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Resort Dining</strong> <small>(<span id="mk-dining-checks" class="total-checks">24</span> of <span id="mk-dining-total" class="total-all">{{ $resortDiningCount }}</span>)</small></p>
+      <p>of <strong>Resort Dining</strong> <small>(<span id="mk-dining-checks" class="total-checks">{{ $resortDiningCheckedCount }}</span> of <span id="mk-dining-total" class="total-all">{{ $resortDiningCount }}</span>)</small></p>
     </div> <!-- /.progress-dining-->
   </div> <!-- /.widget-column-->
 @stop

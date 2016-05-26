@@ -36,7 +36,7 @@
   <nav class="row navbar navbar-default navbar-list" role="navigation">
     <ul class="nav navbar-nav navbar-left">
       <li @if (empty($category)) class="active"><span class="sr-only">(current)</span @endif >
-        <a href="{{ URL::current() }}">All (<span class="total-count">{{ $total }}</span>)</a></li>
+        <a href="{{ URL::current() }}">All (<span class="total-count">{{ $totalCount }}</span>)</a></li>
       <li @if ($category == 'attractions') class="active"><span class="sr-only">(current)</span @endif >
         <a href="{{ URL::current() }}?category=attractions">Attractions (<span class="attraction-count">{{ $attractionCount }}</span>)</a></li>
       <li @if ($category == 'entertainment') class="active"><span class="sr-only">(current)</span @endif >
@@ -91,30 +91,30 @@
       <span>You've Done</span>
     </div> <!-- /.widget-header-->
     <div class="progress-animate progress-total">
-      <div class="progress-wrap progress" data-progress-percent="46">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
       <p>of <strong>
       @if(!empty($area)) {{ ucwords($area) }} @else {{ $title }} @endif
-      </strong> <small>(<span class="total-checks">17</span> of <span class="total-all">{{ $total }}</span>)</small></p>
+      </strong> <small>(<span class="total-checks">{{ $totalCheckedCount }}</span> of <span class="total-all">{{ $totalCount }}</span>)</small></p>
     </div> <!-- /.progress-total-->
     <div class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="75">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Attractions</strong> <small>(<span class="total-checks">10</span> of <span class="total-all">{{ $attractionCount }}</span>)</small></p>
+      <p>of <strong>Attractions</strong> <small>(<span class="total-checks">{{ $attractionCheckedCount }}</span> of <span class="total-all">{{ $attractionCount }}</span>)</small></p>
     </div> <!-- /.progress-attractions-->
     <div class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="75">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Entertainment</strong> <small>(<span class="total-checks">6</span> of <span class="total-all">{{ $entertainmentCount }}</span>)</small></p>
+      <p>of <strong>Entertainment</strong> <small>(<span class="total-checks">{{ $entertainmentCheckedCount }}</span> of <span class="total-all">{{ $entertainmentCount }}</span>)</small></p>
     </div> <!-- /.progress-entertainment-->
     <div class="progress-animate">
-      <div class="progress-wrap progress" data-progress-percent="30">
+      <div class="progress-wrap progress">
         <div class="progress-bar progress"></div>
       </div> <!-- /progress bar-->
-      <p>of <strong>Dining</strong> <small>(<span class="total-checks">14</span> of <span class="total-all">{{ $diningCount }}</span>)</small></p>
+      <p>of <strong>Dining</strong> <small>(<span class="total-checks">{{ $diningCheckedCount }}</span> of <span class="total-all">{{ $diningCount }}</span>)</small></p>
     </div> <!-- /.progress-dining-->
   </div> <!-- /.widget-column-->
 @stop
