@@ -8,13 +8,25 @@ MagicTracker
 @stop
 
 @section('jumbotron')
-<div class="jumbotron splash">
-  <div class="container jumbotron-content">
-    <div class="col-sm-12">
-      <h1 class="title-bold"></h1>
+<div class="splash">
+  <!-- <div class="blue-cast"></div> -->
+  <div class="container">
+    <div class="row row-centered">
+      <h1 class="title-bold">MagicTracker</h1>
+	    <div class="col-sm-8 col-centered buttons">
+		  	<div class="col-sm-4 col-centered">
+	          <a href="register" class="btn btn-block btn-lg btn-danger">
+				    Sign Up
+	          </a>
+		    </div>
+		    <div class="col-sm-4 col-centered">
+			    <a href="login" class="btn btn-block btn-lg btn-success">
+				    Log in
+			    </a>
+		   	</div>
+   	</div>
     </div>
   </div>
-  <div class="blue-cast"></div>
   </div>
 @stop
 

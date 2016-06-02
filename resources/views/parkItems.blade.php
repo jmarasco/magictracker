@@ -50,8 +50,8 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="filter-name">ALL </span><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li id="listFilterAll"><a href="{{ URL::current() }}">All</a></li>
-            <li id="listFilterChecked"><a href="{{ URL::current() }}?checked=checked">Checked</a></li>
-            <li id="listFilterUnchecked"><a href="{{ URL::current() }}?checked=unchecked">Unchecked</a></li>
+            <li id="listFilterChecked"><a href="#">Checked</a></li>
+            <li id="listFilterUnchecked"><a href="#">Unchecked</a></li>
           </ul>
       </li>
       @if(!$area)

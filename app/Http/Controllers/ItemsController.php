@@ -353,7 +353,7 @@ class ItemsController extends Controller
       return Item::join('categories', 'items.category_id', '=', 'categories.id')
         ->join('status', 'items.status_id', '=', 'status.id')
         ->join('locations', 'items.location_id', '=', 'locations.id')
-        ->select('items.id', 'item_name', 'locations.location', 'item_img')
+        ->select('items.id', 'item_name', 'locations.location', 'categories.name', 'item_img')
         ->where([
           ['status.name', '=', 'Active'],
           ['items.seasonal', '=', $this->seasonal]

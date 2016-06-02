@@ -23,32 +23,33 @@
             <div class="col-sm-8">
               <h4 class="item-name"><a href="/items/{{ $item->item_name }}">{{ $item->item_name }}</a></h4>
                 @if ($item->location)
-                <a href="{{ URL::current() . '/' . strtolower($item->location) }}" class="item-location">{{ $item->location }}</a>
+                <a href="{{ URL::current() . '/' . strtolower($item->location) }}" class="item-location">{{ $item->location }}</a><span class="bullet"> &#8226</span>
+                <a href="{{ URL::current() . '/' . strtolower($item->location) }}" class="item-location">{{ $item->name }}</a>
                 @elseif ($item->parent)
                   <a href="/items/{{ strtolower($item->parent) }}" class="item-location">{{ $item->parent }}</a>
                 @endif
-            </div> <!-- /col-xs-8 -->
+            </div>
             <div class="col-sm-4 actions-col">
               <div class="row actions">
-                <div class="col col-xs-3 btn-col-counter">
+                <!-- <div class="col col-xs-3 btn-col-counter">
                   <button type="button" class="btn btn-counter" aria-label="Left Align" title="Add a check">
                     <span class="check-count">1</span>
                   </button>
-                </div> <!-- /col-xs-3 -->
+                </div>
                 <div class="col col-xs-3 btn-col-to-do">
                   <button type="button" class="btn btn-link btn-to-do" aria-label="Left Align" title="Add to your To Do List">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   </button>
-                </div> <!-- /col-xs-3 -->
+                </div> -->
                 <div class="col col-xs-3 btn-col-unchecked">
                   <button type="button" class="btn btn-check" aria-label="Left Align" title="Mark as checked">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                   </button>
-                </div> <!-- /col-xs-3 -->
-              </div> <!-- /actions -->
-            </div> <!-- /col-xs-4 -->
-          </div> <!-- /row -->
-        </div> <!-- /item-body -->
-      </li> <!-- /list-item -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li> 
       @endforeach
   </ol> <!--- master-item-list -->

@@ -21,6 +21,7 @@ Route::get('404', [
     'as' => '404', 'uses' => 'ItemsController@magickingdom'
 ]);
 
+// Item Pages
 Route::get('magic-kingdom/{area?}', [
     'as' => 'mk', 'uses' => 'ItemsController@magickingdom'
 ]);
@@ -49,17 +50,16 @@ Route::get('items/{item}', [
     'as' => 'item', 'uses' => 'ItemsController@show'
 ]);
 
+// Auth Routes
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', [
+    'as' => 'home', 'uses' => 'ItemsController@magickingdom'
+]);
 
+// Item action routes
 Route::post('/itemactions/check', [
     'as' => 'check', 
     'middleware' => 'auth',
     'uses' => 'ChecksController@checkUncheck'
 ]);
-
-// TEMP
-Route::get('/itemactions/check', function() {
-    return view('items.checkItem', ['pageType' => '']);
-});
